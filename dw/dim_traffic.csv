@@ -1,0 +1,13 @@
+traffic_key,source,source_name,device
+1,ads,Publicidad en redes,desktop
+2,ads,Publicidad en redes,mobile
+3,ads,Publicidad en redes,tablet
+4,direct,Directo / newsletter,desktop
+5,direct,Directo / newsletter,mobile
+6,direct,Directo / newsletter,tablet
+7,organic,Buscadores (orgánico),desktop
+8,organic,Buscadores (orgánico),mobile
+9,organic,Buscadores (orgánico),tablet
+10,referral,Referido,desktop
+11,referral,Referido,mobile
+12,referral,Referido,tablet
