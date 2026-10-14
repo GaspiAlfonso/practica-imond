@@ -30,6 +30,7 @@ scripts/
   kpi_ventas_provincia.py       KPI Ventas por provincia
   kpi_ranking_producto.py       KPI Ranking mensual por producto
 dw/                   data warehouse: CSV de dimensiones, hechos y KPIs (se regenera)
+docs/                 capturas (PNG y PDF) del dashboard publicado
 run_sql.py            ejecuta sql/ y arma el data warehouse
 requirements.txt      dependencias (DuckDB)
 ```
@@ -370,7 +371,7 @@ Una combinación origen + dispositivo.
 3. **Ticket Promedio** = `SUM(total_amount) / cantidad de pedidos`, con el mismo filtro de Ventas.
 4. **Provincia** = provincia de la dirección de envío. En compras en tienda es la provincia de la tienda.
 5. **Usuarios activos:** un usuario es el cliente si inició sesión; si la sesión es anónima, cada sesión cuenta como un usuario (el 70,5 % de las sesiones es anónimo). Una persona anónima que vuelve se cuenta de nuevo, porque no hay forma de reconocerla. Por eso es una **estimación**.
-6. **Los usuarios distintos no se suman** entre períodos ni entre orígenes. Por eso el dashboard los calcula con `COUNT_DISTINCT` sobre `fact_web_session.csv`. Los CSV de usuarios activos por período (`kpi_usuarios_activos_*.csv`) traen además una fila `origen = 'Todos'` con el total real de cada período.
+6. **Los usuarios distintos no se suman** entre períodos ni entre orígenes. Por eso el dashboard no los calcula sumando filas: usa `kpi_usuarios_activos_mensual.csv`, donde cada mes ya trae el total de usuarios distintos en la fila `origen = 'Todos'`. Con `COUNT_DISTINCT` sobre `fact_web_session.csv`, Looker Studio contaba los usuarios por día y luego sumaba (99.515 en lugar de los 73.828 usuarios distintos reales). Por eso la tarjeta muestra el **promedio de usuarios activos por mes**.
 7. **NPS** = (% de respuestas 9-10) − (% de respuestas 0-6), por 100. Las respuestas sin cliente se incluyen (anónimas). El dashboard recalcula el NPS con los conteos de cada filtro; los CSV de NPS traen además filas `canal = 'Todos'` que el tablero excluye para no duplicar respuestas.
 8. **Las sesiones web no tienen número de pedido** y el NPS tampoco: no se puede atribuir una venta a un origen de tráfico ni un NPS a un pedido. El NPS se relaciona por cliente y canal.
 9. **Las sesiones web pertenecen al canal online;** no tienen provincia. Por eso Usuarios Activos no responde a los filtros de canal y provincia.
@@ -383,7 +384,7 @@ Una combinación origen + dispositivo.
 |---|---|
 | Ventas | `SUM(total_amount)` de pedidos `PAID` y `FULFILLED`, por período, canal, provincia y producto |
 | Ticket Promedio | `SUM(total_amount) / COUNT(pedidos)` con el mismo filtro |
-| Usuarios Activos | `COUNT(DISTINCT active_user_key)` de sesiones web por período |
+| Usuarios Activos | `COUNT(DISTINCT active_user_key)` de sesiones web por período (en el dashboard, usuarios activos por mes y su promedio) |
 | NPS | `(%promotores − %detractores) × 100` sobre las respuestas |
 | Ventas por Provincia | `SUM(total_amount)` agrupado por provincia de envío |
 | Ranking por Producto | `SUM(line_total)` por producto y mes, ordenado de mayor a menor |
@@ -458,12 +459,18 @@ ORDER BY mes, ranking;
 
 ## 8. Dashboard
 
-> ⚠️ **COMPLETAR:** enlace al tablero publicado y capturas.
+- **Enlace al dashboard:** [EcoBottle AR — Dashboard comercial](https://datastudio.google.com/reporting/a469e5d3-3dc2-4823-b6bd-6a3a3a612cfd) (Looker Studio, acceso de lectura con el enlace; si no carga, ver las capturas y los PDF de `docs/`).
+- **Herramienta:** Looker Studio.
+- **Fuente de datos:** los CSV `kpi_*.csv` de `dw/` (ventas diarias, NPS diario, ranking mensual por producto y usuarios activos mensuales), cargados con el conector de archivos CSV de Looker Studio.
+- **Capturas:** carpeta [`docs/`](docs/), en PNG y en PDF.
 
-- **Enlace al dashboard:** `COMPLETAR`
-- **Herramienta:** `COMPLETAR (Looker Studio / Power BI)`
-- **Fuente de datos:** los CSV de `dw/` (`kpi_*.csv` y las dimensiones y hechos necesarios).
-- **Capturas:** `COMPLETAR` (por ejemplo en una carpeta `docs/`).
+![Dashboard completo](docs/dashboard_completo.png)
+
+*Dashboard con el período completo (1 ene 2024 – 30 sept 2025): ventas $382,41 M, ticket promedio $34,8 mil, NPS 30,0 y 4,1 mil usuarios activos por mes.*
+
+![Dashboard filtrado por canal Tienda Online](docs/dashboard_filtro_canal_tienda_online.png)
+
+*Mismo tablero con el filtro `canal = Tienda Online`: ventas $227,01 M, ticket $35,2 mil y NPS 24,0. La tarjeta de usuarios activos no cambia porque las sesiones web no tienen canal. En la serie de NPS se ve la caída por debajo de 0 en el segundo semestre de 2024.*
 
 **Filtros:** fecha, canal, provincia y producto. Cada filtro actúa sobre las vistas cuyos datos tienen ese campo:
 
@@ -472,11 +479,11 @@ ORDER BY mes, ranking;
 | Ventas (serie temporal y tarjeta en $M) | `kpi_ventas_diario.csv` | `SUM(ventas)` | fecha, canal, provincia |
 | Ticket promedio (en $K) | `kpi_ventas_diario.csv` | `SUM(ventas) / SUM(pedidos)` | fecha, canal, provincia |
 | Ventas por provincia (mapa o barras) | `kpi_ventas_diario.csv` | `SUM(ventas)` por provincia | fecha, canal |
-| Usuarios activos (serie y tarjeta en miles) | `fact_web_session.csv` | `COUNT_DISTINCT(active_user_key)` | fecha |
+| Usuarios activos (serie mensual y tarjeta en miles) | `kpi_usuarios_activos_mensual.csv` | `SUM(usuarios_activos)` con `origen = 'Todos'` (un solo valor por mes); la tarjeta muestra el promedio mensual | fecha |
 | NPS (tarjeta y tendencia) | `kpi_nps_diario.csv` | `(SUM(promotores) − SUM(detractores)) / SUM(respuestas) × 100`, excluyendo las filas `canal = 'Todos'` | fecha, canal |
 | Ranking mensual por producto (top N) | `kpi_ranking_producto_mensual.csv` | `SUM(ventas_items)` por producto, ordenado | fecha (por mes), canal, provincia, producto |
 
-Los usuarios activos se calculan directamente sobre las sesiones (`fact_web_session.csv`) porque los usuarios distintos no se pueden sumar: así el tablero cuenta correctamente para cualquier rango de fechas. El filtro de producto solo afecta al ranking, y las sesiones web no tienen canal ni provincia (ver supuestos 8 y 9).
+Los usuarios activos vienen del CSV mensual precalculado porque los usuarios distintos no se pueden sumar: con `COUNT_DISTINCT` sobre las sesiones, Looker Studio sumaba los distintos de cada día (ver supuesto 6). La tarjeta es el **promedio de usuarios activos por mes** en el período elegido. El filtro de producto solo afecta al ranking, y las sesiones web no tienen canal ni provincia (ver supuestos 8 y 9).
 
 ## 9. Hallazgos
 
