@@ -9,7 +9,7 @@ Diseñar e implementar un mini ecosistema de datos comercial (online + offline) 
 
 1. Modela un **esquema estrella** (Kimball) en SQL con DuckDB a partir de los 13 CSV de origen.
 2. Calcula cada KPI con un **script Python** que lee el data warehouse.
-3. Alimenta un **dashboard** para el área comercial con: Ventas, Usuarios Activos, Ticket Promedio, NPS, Ventas por Provincia y Ranking mensual por Producto.
+3. Alimenta un **dashboard** para el área comercial con: Ventas, Usuarios Activos, Ticket Promedio, NPS, Ventas por Provincia y Ranking mensual por Producto. Se construyó en **Looker Studio** y, como respaldo, en **Power BI**.
 
 **Resultado en una línea:** entre el 01/01/2024 y el 30/09/2025 la empresa vendió **$382.410.636** en **10.998** pedidos, con un ticket promedio de **$34.771** y un NPS de **30,0**.
 
@@ -29,8 +29,9 @@ scripts/
   kpi_nps.py                    KPI NPS
   kpi_ventas_provincia.py       KPI Ventas por provincia
   kpi_ranking_producto.py       KPI Ranking mensual por producto
-dw/                   data warehouse: CSV de dimensiones, hechos y KPIs (se regenera)
-docs/                 capturas (PNG y PDF) del dashboard publicado
+dw/                   data warehouse: CSV de dimensiones, hechos y data marts de KPIs (se regenera)
+docs/                 capturas (PNG) de los dashboards de Looker Studio y Power BI
+powerbi/              reporte de Power BI (.pbix) y medidas DAX
 run_sql.py            ejecuta sql/ y arma el data warehouse
 requirements.txt      dependencias (DuckDB)
 ```
@@ -341,6 +342,9 @@ Una combinación origen + dispositivo.
 | `comment` | VARCHAR |  | Sí | Comentario libre (opcional). |
 | `responded_at` | TIMESTAMP |  | No | Fecha y hora de la respuesta. |
 
+### 5.2 Data marts (tablas de KPIs generadas por `scripts/`)
+
+Cada KPI tiene su **data mart** en `dw/`, ya agregado al grano que consume el dashboard. Se generan con un script Python que lee el warehouse; el dashboard de Looker Studio los usa como fuente.
 
 ### 5.2 Tablas de KPIs (generadas por `scripts/`)
 
@@ -371,7 +375,7 @@ Una combinación origen + dispositivo.
 3. **Ticket Promedio** = `SUM(total_amount) / cantidad de pedidos`, con el mismo filtro de Ventas.
 4. **Provincia** = provincia de la dirección de envío. En compras en tienda es la provincia de la tienda.
 5. **Usuarios activos:** un usuario es el cliente si inició sesión; si la sesión es anónima, cada sesión cuenta como un usuario (el 70,5 % de las sesiones es anónimo). Una persona anónima que vuelve se cuenta de nuevo, porque no hay forma de reconocerla. Por eso es una **estimación**.
-6. **Los usuarios distintos no se suman** entre períodos ni entre orígenes. Por eso el dashboard no los calcula sumando filas: usa `kpi_usuarios_activos_mensual.csv`, donde cada mes ya trae el total de usuarios distintos en la fila `origen = 'Todos'`. Con `COUNT_DISTINCT` sobre `fact_web_session.csv`, Looker Studio contaba los usuarios por día y luego sumaba (99.515 en lugar de los 73.828 usuarios distintos reales). Por eso la tarjeta muestra el **promedio de usuarios activos por mes**.
+6. **Los usuarios distintos no se suman** entre períodos ni entre orígenes. Por eso el dashboard no los calcula sumando filas: usa `kpi_usuarios_activos_mensual.csv`, donde cada mes ya trae el total de usuarios distintos en la fila `origen = 'Todos'`. Con `COUNT_DISTINCT` sobre `fact_web_session.csv`, Looker Studio contaba los usuarios por día y luego sumaba (99.515 en lugar de los 73.828 usuarios distintos reales). Por eso la tarjeta muestra el **promedio de usuarios activos por mes**. En Power BI, la tarjeta usa `DISTINCTCOUNT(active_user_key)` sobre `fact_web_session`, que sí calcula los usuarios distintos del período filtrado (73,8 K en el período completo); la serie mensual muestra los distintos de cada mes.
 7. **NPS** = (% de respuestas 9-10) − (% de respuestas 0-6), por 100. Las respuestas sin cliente se incluyen (anónimas). El dashboard recalcula el NPS con los conteos de cada filtro; los CSV de NPS traen además filas `canal = 'Todos'` que el tablero excluye para no duplicar respuestas.
 8. **Las sesiones web no tienen número de pedido** y el NPS tampoco: no se puede atribuir una venta a un origen de tráfico ni un NPS a un pedido. El NPS se relaciona por cliente y canal.
 9. **Las sesiones web pertenecen al canal online;** no tienen provincia. Por eso Usuarios Activos no responde a los filtros de canal y provincia.
@@ -459,6 +463,8 @@ ORDER BY mes, ranking;
 
 ## 8. Dashboard
 
+### 8.1 Looker Studio
+
 - **Enlace al dashboard:** [EcoBottle AR — Dashboard comercial](https://datastudio.google.com/reporting/a469e5d3-3dc2-4823-b6bd-6a3a3a612cfd) (Looker Studio, acceso de lectura con el enlace; si no carga, ver las capturas y los PDF de `docs/`).
 - **Herramienta:** Looker Studio.
 - **Fuente de datos:** los CSV `kpi_*.csv` de `dw/` (ventas diarias, NPS diario, ranking mensual por producto y usuarios activos mensuales), cargados con el conector de archivos CSV de Looker Studio.
@@ -484,6 +490,34 @@ ORDER BY mes, ranking;
 | Ranking mensual por producto (top N) | `kpi_ranking_producto_mensual.csv` | `SUM(ventas_items)` por producto, ordenado | fecha (por mes), canal, provincia, producto |
 
 Los usuarios activos vienen del CSV mensual precalculado porque los usuarios distintos no se pueden sumar: con `COUNT_DISTINCT` sobre las sesiones, Looker Studio sumaba los distintos de cada día (ver supuesto 6). La tarjeta es el **promedio de usuarios activos por mes** en el período elegido. El filtro de producto solo afecta al ranking, y las sesiones web no tienen canal ni provincia (ver supuestos 8 y 9).
+
+### 8.2 Power BI (respaldo)
+
+- **Archivo:** [`powerbi/EcoBottle_AR.pbix`](powerbi/EcoBottle_AR.pbix). Para abrirlo en otra máquina: *Transformar datos → Configuración de origen de datos* y apuntar a la carpeta `dw/`. La configuración regional de importación debe ser *Inglés (EE. UU.)*.
+- **Modelo:** las 9 dimensiones y las 6 tablas de hechos de `dw/`, con 30 relaciones (27 activas y 3 inactivas para las fechas de cobro, despacho y entrega).
+- **Medidas DAX:** [`powerbi/medidas.dax`](powerbi/medidas.dax). Los cálculos de origen están en SQL y Python; el DAX solo los reproduce para visualizar.
+
+![Dashboard completo en Power BI](docs/dashboard_powerbi.png)
+
+| Vista | Captura |
+|---|---|
+| Canal = Tienda Online | [`docs/dashboard_powerbi_tienda_online.png`](docs/dashboard_powerbi_tienda_online.png) |
+| Canal = Tiendas Físicas | [`docs/dashboard_powerbi_tiendas_fisicas.png`](docs/dashboard_powerbi_tiendas_fisicas.png) |
+
+**Validación contra SQL y los data marts:**
+
+| Vista | Consulta / data mart | Valor en Power BI |
+|---|---|---|
+| Ventas ($M) | B1 / `kpi_ventas_diario.csv` | $382,4 M |
+| Ticket promedio ($K) | B3 / `kpi_ticket_mensual.csv` | $34,8 K |
+| Usuarios activos (nK) | B4 / `kpi_usuarios_activos_*.csv` | 73,8 K |
+| NPS | B5 / `kpi_nps_*.csv` | 30,0 |
+| Ventas por provincia | B7 / `kpi_ventas_provincia.csv` | BA $142,7 M · Córdoba $89,5 M · Santa Fe $87,5 M · Mendoza $62,6 M |
+| Ranking por producto | B8 / `kpi_ranking_producto_mensual.csv` | Sept. 2025: 1.º Sport B ($6.899.250), 2.º Classic A ($6.534.000) |
+
+Con el filtro `canal = Tienda Online` las ventas son $227,0 M y el NPS 24,0; con `Tiendas Físicas`, $155,4 M y 40,9. Igual que en Looker, Usuarios Activos no cambia con el canal, porque las sesiones web no tienen canal (supuestos 8 y 9).
+
+La tarjeta de Usuarios Activos de Power BI muestra los usuarios distintos del período completo (73,8 K); la de Looker Studio muestra el promedio mensual (≈4,1 mil). Ambos salen de los mismos datos.
 
 ## 9. Hallazgos
 
