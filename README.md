@@ -101,6 +101,104 @@ erDiagram
     dim_traffic ||--o{ fact_web_session : ""
 ```
 
+El diagrama anterior es la vista general. Para leerlo mejor, a continuación se muestra **una estrella por cada tabla de hechos**. Las estrellas comparten dimensiones (por ejemplo `dim_date`), pero no se conectan entre sí.
+
+### Las 6 estrellas (una por tabla de hechos)
+
+**1. Pedidos (`fact_sales_order`)**: Ventas, Ticket promedio y Ventas por provincia.
+
+```mermaid
+erDiagram
+    dim_date ||--o{ fact_sales_order : "fecha del pedido"
+    dim_customer ||--o{ fact_sales_order : ""
+    dim_channel ||--o{ fact_sales_order : ""
+    dim_store ||--o{ fact_sales_order : ""
+    dim_province ||--o{ fact_sales_order : ""
+    dim_payment_method ||--o{ fact_sales_order : ""
+    dim_order_status ||--o{ fact_sales_order : ""
+    fact_sales_order {
+        bigint order_id PK
+        decimal subtotal
+        decimal tax_amount
+        decimal shipping_fee
+        decimal total_amount
+    }
+```
+
+**2. Líneas de pedido (`fact_sales_item`)**: Ranking mensual por producto.
+
+```mermaid
+erDiagram
+    dim_date ||--o{ fact_sales_item : ""
+    dim_customer ||--o{ fact_sales_item : ""
+    dim_channel ||--o{ fact_sales_item : ""
+    dim_store ||--o{ fact_sales_item : ""
+    dim_province ||--o{ fact_sales_item : ""
+    dim_product ||--o{ fact_sales_item : ""
+    dim_order_status ||--o{ fact_sales_item : ""
+    fact_sales_item {
+        bigint order_item_id PK
+        int quantity
+        decimal line_total
+    }
+```
+
+**3. Pagos (`fact_payment`)**: conciliación de ventas y cobros. Usa `dim_date` dos veces (fecha del pedido y fecha de cobro).
+
+```mermaid
+erDiagram
+    dim_date ||--o{ fact_payment : "fecha del pedido"
+    dim_date |o--o{ fact_payment : "fecha de cobro"
+    dim_channel ||--o{ fact_payment : ""
+    dim_payment_method ||--o{ fact_payment : ""
+    fact_payment {
+        bigint payment_id PK
+        decimal amount
+    }
+```
+
+**4. Envíos (`fact_shipment`)**: tiempos de entrega. Usa `dim_date` tres veces (pedido, despacho y entrega).
+
+```mermaid
+erDiagram
+    dim_date ||--o{ fact_shipment : "fecha del pedido"
+    dim_date |o--o{ fact_shipment : "fecha de despacho"
+    dim_date |o--o{ fact_shipment : "fecha de entrega"
+    dim_channel ||--o{ fact_shipment : ""
+    dim_store ||--o{ fact_shipment : ""
+    dim_province ||--o{ fact_shipment : ""
+    fact_shipment {
+        bigint shipment_id PK
+        double delivery_days
+    }
+```
+
+**5. Sesiones web (`fact_web_session`)**: Usuarios activos.
+
+```mermaid
+erDiagram
+    dim_date ||--o{ fact_web_session : ""
+    dim_customer ||--o{ fact_web_session : ""
+    dim_traffic ||--o{ fact_web_session : ""
+    fact_web_session {
+        bigint session_id PK
+        varchar active_user_key
+    }
+```
+
+**6. Encuestas (`fact_nps`)**: NPS.
+
+```mermaid
+erDiagram
+    dim_date ||--o{ fact_nps : ""
+    dim_customer ||--o{ fact_nps : ""
+    dim_channel ||--o{ fact_nps : ""
+    fact_nps {
+        bigint nps_id PK
+        smallint score
+    }
+```
+
 Decisiones de diseño:
 
 - **Dos hechos de venta:** `fact_sales_order` (un pedido) para Ventas y Ticket, y `fact_sales_item` (una línea) para el ranking por producto. Así cada KPI se calcula al grano correcto y no se duplican importes.
@@ -108,6 +206,7 @@ Decisiones de diseño:
 - **Fila "Desconocido" (`-1`)** en `dim_customer` y `dim_store`: los pedidos online no tienen tienda y hay NPS y sesiones web anónimas. Así ninguna clave foránea queda en NULL.
 - **Provincia desnormalizada en los hechos** (`province_key`), tomada de la dirección de envío, para filtrar y agrupar sin joins intermedios.
 - **`dim_date` generada** con todos los días del período y atributos útiles (`year_month`, `is_weekend`).
+
 
 ## 5. Diccionario de datos
 
@@ -346,8 +445,6 @@ Una combinación origen + dispositivo.
 
 Cada KPI tiene su **data mart** en `dw/`, ya agregado al grano que consume el dashboard. Se generan con un script Python que lee el warehouse; el dashboard de Looker Studio los usa como fuente.
 
-### 5.2 Tablas de KPIs (generadas por `scripts/`)
-
 | Archivo en `dw/` | Script | Columnas |
 |---|---|---|
 | `kpi_ventas_diario.csv` | `kpi_ventas.py` | `fecha`, `mes`, `canal`, `provincia`, `pedidos`, `ventas` |
@@ -530,10 +627,13 @@ La tarjeta de Usuarios Activos de Power BI muestra los usuarios distintos del pe
 7. **El cliente vuelve a comprar:** el **71 %** de los 3.194 clientes con compras realizó dos o más.
 8. **Tráfico:** el **61,9 %** de las sesiones es desde celular, y la conversión aproximada de la tienda online (pedidos online que son venta sobre sesiones totales) es de **6,4 %**. Es una aproximación, porque las sesiones no se pueden vincular a pedidos.
 9. **Las ventas del fin de semana** representan el 25,8 % del total.
+10. **El ticket más alto del canal online se explica por el envío.** Con IVA y envío, el ticket online es de $35.152 contra $34.229 en tiendas; sin IVA ni envío es prácticamente igual ($28.133 contra $28.240). El envío aporta $7,2 M al canal online y solo $0,3 M a las tiendas físicas (consultas D2 y D4).
+11. **De cada peso vendido, el 81 % es producto.** De los $382,4 M de ventas totales, $309,9 M son ventas sin IVA (81,0 %), $65,1 M son IVA (17,0 %) y $7,4 M son envío (1,9 %) (consulta D1).
 
 ### Ideas para ampliar el dashboard
 
 - Vista de **logística**: tiempo de entrega por mes y provincia junto al NPS online, para detectar demoras antes de que afecten la satisfacción.
+- **Ventas con y sin impuestos** en el dashboard (ya están calculadas en SQL, consultas D1 a D4): IVA y envío por mes y por canal.
 - **Tasa de cancelación** y pagos fallidos por método de pago.
 - **Conversión** mensual (sesiones contra pedidos) y mix de tráfico por origen y dispositivo.
 - **Clientes recurrentes** y frecuencia de compra.
