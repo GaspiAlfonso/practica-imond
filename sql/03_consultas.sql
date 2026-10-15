@@ -179,3 +179,50 @@ GROUP BY m.method_name
 ORDER BY ventas DESC;
 
 
+-- ============================================================
+-- D. Extra: ventas con y sin impuestos (solo PAID y FULFILLED)
+-- total_amount = subtotal (sin IVA) + tax_amount (IVA 21 %) + shipping_fee
+-- ============================================================
+
+-- D1. Total del período, con control de que la suma cierra (diferencia = 0)
+SELECT SUM(subtotal)      AS ventas_sin_iva,
+       SUM(tax_amount)    AS iva,
+       SUM(shipping_fee)  AS envio,
+       SUM(total_amount)  AS ventas_total,
+       SUM(subtotal) + SUM(tax_amount) + SUM(shipping_fee) - SUM(total_amount) AS diferencia
+FROM fact_sales_order
+WHERE is_sale;
+
+-- D2. Por canal
+SELECT ch.name                AS canal,
+       SUM(o.subtotal)        AS ventas_sin_iva,
+       SUM(o.tax_amount)      AS iva,
+       SUM(o.shipping_fee)    AS envio,
+       SUM(o.total_amount)    AS ventas_total
+FROM fact_sales_order AS o
+JOIN dim_channel AS ch USING (channel_key)
+WHERE o.is_sale
+GROUP BY ch.name
+ORDER BY ch.name;
+
+-- D3. Por mes
+SELECT d.year_month           AS mes,
+       SUM(o.subtotal)        AS ventas_sin_iva,
+       SUM(o.tax_amount)      AS iva,
+       SUM(o.shipping_fee)    AS envio,
+       SUM(o.total_amount)    AS ventas_total
+FROM fact_sales_order AS o
+JOIN dim_date AS d USING (date_key)
+WHERE o.is_sale
+GROUP BY d.year_month
+ORDER BY mes;
+
+-- D4. Ticket promedio con y sin IVA, por canal
+SELECT ch.name                          AS canal,
+       SUM(o.total_amount) / COUNT(*)   AS ticket_con_iva_y_envio,
+       SUM(o.subtotal) / COUNT(*)       AS ticket_sin_iva
+FROM fact_sales_order AS o
+JOIN dim_channel AS ch USING (channel_key)
+WHERE o.is_sale
+GROUP BY ch.name
+ORDER BY ch.name;
