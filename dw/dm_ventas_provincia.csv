@@ -1,0 +1,169 @@
+mes,canal,provincia,cod_provincia,pedidos,ventas
+2024-01,Tienda Online,Buenos Aires,BA,93,3174915.0
+2024-01,Tienda Online,Córdoba,CBA,64,2528650.5
+2024-01,Tienda Online,Mendoza,MZA,29,1132185.0
+2024-01,Tienda Online,Santa Fe,SF,65,1966566.0
+2024-01,Tiendas Físicas,Buenos Aires,BA,73,2457954.0
+2024-01,Tiendas Físicas,Córdoba,CBA,52,1763091.0
+2024-01,Tiendas Físicas,Mendoza,MZA,40,1274433.0
+2024-01,Tiendas Físicas,Santa Fe,SF,44,1667670.0
+2024-02,Tienda Online,Buenos Aires,BA,104,3966750.0
+2024-02,Tienda Online,Córdoba,CBA,81,2625576.0
+2024-02,Tienda Online,Mendoza,MZA,38,1313035.5
+2024-02,Tienda Online,Santa Fe,SF,61,2103577.5
+2024-02,Tiendas Físicas,Buenos Aires,BA,77,3043039.5
+2024-02,Tiendas Físicas,Córdoba,CBA,51,1832835.0
+2024-02,Tiendas Físicas,Mendoza,MZA,45,1422189.0
+2024-02,Tiendas Físicas,Santa Fe,SF,56,2070877.5
+2024-03,Tienda Online,Buenos Aires,BA,111,3823638.0
+2024-03,Tienda Online,Córdoba,CBA,52,1969246.5
+2024-03,Tienda Online,Mendoza,MZA,30,1131822.0
+2024-03,Tienda Online,Santa Fe,SF,60,2433000.0
+2024-03,Tiendas Físicas,Buenos Aires,BA,67,2381976.0
+2024-03,Tiendas Físicas,Córdoba,CBA,66,2204910.0
+2024-03,Tiendas Físicas,Mendoza,MZA,35,1085295.0
+2024-03,Tiendas Físicas,Santa Fe,SF,61,2078586.0
+2024-04,Tienda Online,Buenos Aires,BA,101,3364210.5
+2024-04,Tienda Online,Córdoba,CBA,50,1734786.0
+2024-04,Tienda Online,Mendoza,MZA,32,1117861.5
+2024-04,Tienda Online,Santa Fe,SF,61,2213737.5
+2024-04,Tiendas Físicas,Buenos Aires,BA,49,1601526.0
+2024-04,Tiendas Físicas,Córdoba,CBA,41,1505457.0
+2024-04,Tiendas Físicas,Mendoza,MZA,42,1402995.0
+2024-04,Tiendas Físicas,Santa Fe,SF,62,2303235.0
+2024-05,Tienda Online,Buenos Aires,BA,121,3958954.5
+2024-05,Tienda Online,Córdoba,CBA,59,1900341.0
+2024-05,Tienda Online,Mendoza,MZA,39,1325346.0
+2024-05,Tienda Online,Santa Fe,SF,66,2316579.0
+2024-05,Tiendas Físicas,Buenos Aires,BA,55,2002278.0
+2024-05,Tiendas Físicas,Córdoba,CBA,54,2053854.0
+2024-05,Tiendas Físicas,Mendoza,MZA,37,1229814.0
+2024-05,Tiendas Físicas,Santa Fe,SF,43,1545339.0
+2024-06,Tienda Online,Buenos Aires,BA,125,4974529.5
+2024-06,Tienda Online,Córdoba,CBA,64,2228278.5
+2024-06,Tienda Online,Mendoza,MZA,46,1311645.0
+2024-06,Tienda Online,Santa Fe,SF,70,2485570.5
+2024-06,Tiendas Físicas,Buenos Aires,BA,75,2781891.0
+2024-06,Tiendas Físicas,Córdoba,CBA,76,2597676.0
+2024-06,Tiendas Físicas,Mendoza,MZA,43,1535656.5
+2024-06,Tiendas Físicas,Santa Fe,SF,56,1829301.0
+2024-07,Tienda Online,Buenos Aires,BA,92,3249985.5
+2024-07,Tienda Online,Córdoba,CBA,35,1094118.0
+2024-07,Tienda Online,Mendoza,MZA,24,1159182.0
+2024-07,Tienda Online,Santa Fe,SF,51,1887534.0
+2024-07,Tiendas Físicas,Buenos Aires,BA,56,1976505.0
+2024-07,Tiendas Físicas,Córdoba,CBA,48,1771803.0
+2024-07,Tiendas Físicas,Mendoza,MZA,40,1280982.0
+2024-07,Tiendas Físicas,Santa Fe,SF,41,1191195.0
+2024-08,Tienda Online,Buenos Aires,BA,116,4007770.5
+2024-08,Tienda Online,Córdoba,CBA,55,1854100.5
+2024-08,Tienda Online,Mendoza,MZA,22,767656.5
+2024-08,Tienda Online,Santa Fe,SF,52,1457208.0
+2024-08,Tiendas Físicas,Buenos Aires,BA,54,1952436.0
+2024-08,Tiendas Físicas,Córdoba,CBA,48,1575516.0
+2024-08,Tiendas Físicas,Mendoza,MZA,49,1869420.0
+2024-08,Tiendas Físicas,Santa Fe,SF,48,1520436.0
+2024-09,Tienda Online,Buenos Aires,BA,102,3575002.5
+2024-09,Tienda Online,Córdoba,CBA,58,1915543.5
+2024-09,Tienda Online,Mendoza,MZA,25,871807.5
+2024-09,Tienda Online,Santa Fe,SF,63,2245836.0
+2024-09,Tiendas Físicas,Buenos Aires,BA,57,1970082.0
+2024-09,Tiendas Físicas,Córdoba,CBA,50,1576242.0
+2024-09,Tiendas Físicas,Mendoza,MZA,45,1265721.0
+2024-09,Tiendas Físicas,Santa Fe,SF,43,1499553.0
+2024-10,Tienda Online,Buenos Aires,BA,116,3818778.0
+2024-10,Tienda Online,Córdoba,CBA,74,2533000.5
+2024-10,Tienda Online,Mendoza,MZA,50,1999756.5
+2024-10,Tienda Online,Santa Fe,SF,78,2492488.5
+2024-10,Tiendas Físicas,Buenos Aires,BA,65,2319540.0
+2024-10,Tiendas Físicas,Córdoba,CBA,53,1748485.5
+2024-10,Tiendas Físicas,Mendoza,MZA,46,1678845.0
+2024-10,Tiendas Físicas,Santa Fe,SF,57,1683108.0
+2024-11,Tienda Online,Buenos Aires,BA,157,5075121.0
+2024-11,Tienda Online,Córdoba,CBA,88,2779488.0
+2024-11,Tienda Online,Mendoza,MZA,53,1762611.0
+2024-11,Tienda Online,Santa Fe,SF,69,2309302.5
+2024-11,Tiendas Físicas,Buenos Aires,BA,71,1984743.0
+2024-11,Tiendas Físicas,Córdoba,CBA,44,1751341.5
+2024-11,Tiendas Físicas,Mendoza,MZA,35,1356864.0
+2024-11,Tiendas Físicas,Santa Fe,SF,55,1729428.0
+2024-12,Tienda Online,Buenos Aires,BA,212,8184262.5
+2024-12,Tienda Online,Córdoba,CBA,89,3347172.0
+2024-12,Tienda Online,Mendoza,MZA,68,2438898.0
+2024-12,Tienda Online,Santa Fe,SF,104,3774571.5
+2024-12,Tiendas Físicas,Buenos Aires,BA,104,3610005.0
+2024-12,Tiendas Físicas,Córdoba,CBA,94,2909637.0
+2024-12,Tiendas Físicas,Mendoza,MZA,61,2176881.0
+2024-12,Tiendas Físicas,Santa Fe,SF,53,2007075.0
+2025-01,Tienda Online,Buenos Aires,BA,142,4507663.5
+2025-01,Tienda Online,Córdoba,CBA,71,2332155.0
+2025-01,Tienda Online,Mendoza,MZA,50,2020614.0
+2025-01,Tienda Online,Santa Fe,SF,71,2570635.5
+2025-01,Tiendas Físicas,Buenos Aires,BA,83,2931810.0
+2025-01,Tiendas Físicas,Córdoba,CBA,64,2345850.0
+2025-01,Tiendas Físicas,Mendoza,MZA,42,1598985.0
+2025-01,Tiendas Físicas,Santa Fe,SF,68,2268942.0
+2025-02,Tienda Online,Buenos Aires,BA,153,5229459.0
+2025-02,Tienda Online,Córdoba,CBA,75,2837547.0
+2025-02,Tienda Online,Mendoza,MZA,49,1786615.5
+2025-02,Tienda Online,Santa Fe,SF,66,2655433.5
+2025-02,Tiendas Físicas,Buenos Aires,BA,87,3035376.0
+2025-02,Tiendas Físicas,Córdoba,CBA,69,2376160.5
+2025-02,Tiendas Físicas,Mendoza,MZA,50,1687557.0
+2025-02,Tiendas Físicas,Santa Fe,SF,59,2045964.0
+2025-03,Tienda Online,Buenos Aires,BA,140,4755682.5
+2025-03,Tienda Online,Córdoba,CBA,65,2456653.5
+2025-03,Tienda Online,Mendoza,MZA,64,2133040.5
+2025-03,Tienda Online,Santa Fe,SF,68,2386050.0
+2025-03,Tiendas Físicas,Buenos Aires,BA,80,2791551.0
+2025-03,Tiendas Físicas,Córdoba,CBA,63,2178822.0
+2025-03,Tiendas Físicas,Mendoza,MZA,50,1710804.0
+2025-03,Tiendas Físicas,Santa Fe,SF,51,1572564.0
+2025-04,Tienda Online,Buenos Aires,BA,129,4419211.5
+2025-04,Tienda Online,Córdoba,CBA,68,2479752.0
+2025-04,Tienda Online,Mendoza,MZA,35,1178740.5
+2025-04,Tienda Online,Santa Fe,SF,78,2901397.5
+2025-04,Tiendas Físicas,Buenos Aires,BA,67,2487609.0
+2025-04,Tiendas Físicas,Córdoba,CBA,50,1495245.0
+2025-04,Tiendas Físicas,Mendoza,MZA,28,899136.0
+2025-04,Tiendas Físicas,Santa Fe,SF,40,1199811.0
+2025-05,Tienda Online,Buenos Aires,BA,179,5382310.5
+2025-05,Tienda Online,Córdoba,CBA,83,2906064.0
+2025-05,Tienda Online,Mendoza,MZA,50,1555807.5
+2025-05,Tienda Online,Santa Fe,SF,81,2908471.5
+2025-05,Tiendas Físicas,Buenos Aires,BA,59,1852470.0
+2025-05,Tiendas Físicas,Córdoba,CBA,51,1669944.0
+2025-05,Tiendas Físicas,Mendoza,MZA,31,1180809.0
+2025-05,Tiendas Físicas,Santa Fe,SF,54,2117379.0
+2025-06,Tienda Online,Buenos Aires,BA,133,5684719.5
+2025-06,Tienda Online,Córdoba,CBA,63,2334723.0
+2025-06,Tienda Online,Mendoza,MZA,59,2262070.5
+2025-06,Tienda Online,Santa Fe,SF,74,2829475.5
+2025-06,Tiendas Físicas,Buenos Aires,BA,64,2765193.0
+2025-06,Tiendas Físicas,Córdoba,CBA,67,2062032.0
+2025-06,Tiendas Físicas,Mendoza,MZA,43,1395009.0
+2025-06,Tiendas Físicas,Santa Fe,SF,59,1877265.0
+2025-07,Tienda Online,Buenos Aires,BA,121,3969937.5
+2025-07,Tienda Online,Córdoba,CBA,50,1551940.5
+2025-07,Tienda Online,Mendoza,MZA,40,1358214.0
+2025-07,Tienda Online,Santa Fe,SF,62,2430240.0
+2025-07,Tiendas Físicas,Buenos Aires,BA,40,1244112.0
+2025-07,Tiendas Físicas,Córdoba,CBA,51,1551969.0
+2025-07,Tiendas Físicas,Mendoza,MZA,40,1266114.0
+2025-07,Tiendas Físicas,Santa Fe,SF,39,1324272.0
+2025-08,Tienda Online,Buenos Aires,BA,136,4677274.5
+2025-08,Tienda Online,Córdoba,CBA,80,2799261.0
+2025-08,Tienda Online,Mendoza,MZA,47,2056566.0
+2025-08,Tienda Online,Santa Fe,SF,77,2608371.0
+2025-08,Tiendas Físicas,Buenos Aires,BA,58,1981587.0
+2025-08,Tiendas Físicas,Córdoba,CBA,53,1622610.0
+2025-08,Tiendas Físicas,Mendoza,MZA,46,1703166.0
+2025-08,Tiendas Físicas,Santa Fe,SF,54,1778070.0
+2025-09,Tienda Online,Buenos Aires,BA,128,4208127.0
+2025-09,Tienda Online,Córdoba,CBA,85,3115359.0
+2025-09,Tienda Online,Mendoza,MZA,47,1763776.5
+2025-09,Tienda Online,Santa Fe,SF,64,2256774.0
+2025-09,Tiendas Físicas,Buenos Aires,BA,46,1519266.0
+2025-09,Tiendas Físicas,Córdoba,CBA,47,1617939.0
+2025-09,Tiendas Físicas,Mendoza,MZA,36,1160874.0
+2025-09,Tiendas Físicas,Santa Fe,SF,34,1004517.0
