@@ -167,7 +167,7 @@ def build() -> duckdb.DuckDBPyConnection:
     tables = user_tables(con)
     if tables:
         export_tables(con, tables)
-        write_diagram(con, tables)
+        write_diagram(con, [t for t in tables if not t.startswith(("dm_", "dim_filtro_"))])
     else:
         print("\nTodavía no se creó ninguna tabla.")
     print(f"\nListo. Base de datos: {DATABASE.name}")

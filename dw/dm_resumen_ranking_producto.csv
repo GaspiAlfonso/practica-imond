@@ -1,0 +1,661 @@
+mes,canal,provincia,producto,categoria,unidades,ventas_items,ranking
+2024-01,Tienda Online,Buenos Aires,Sport B Bottle,Sport,98,1450500.0,1
+2024-01,Tienda Online,Buenos Aires,Classic A Bottle,Classic,92,1101000.0,2
+2024-01,Tienda Online,Córdoba,Sport B Bottle,Sport,74,1106250.0,1
+2024-01,Tienda Online,Córdoba,Classic A Bottle,Classic,78,922800.0,2
+2024-01,Tienda Online,Mendoza,Sport B Bottle,Sport,44,634500.0,1
+2024-01,Tienda Online,Mendoza,Classic A Bottle,Classic,22,264000.0,2
+2024-01,Tienda Online,Santa Fe,Sport B Bottle,Sport,55,816000.0,1
+2024-01,Tienda Online,Santa Fe,Classic A Bottle,Classic,62,738600.0,2
+2024-01,Tienda Online,Todos,Sport B Bottle,Sport,271,4007250.0,1
+2024-01,Tienda Online,Todos,Classic A Bottle,Classic,254,3026400.0,2
+2024-01,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,89,1326000.0,1
+2024-01,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,60,701400.0,2
+2024-01,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,56,835500.0,1
+2024-01,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,52,621600.0,2
+2024-01,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,43,640500.0,1
+2024-01,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,34,406800.0,2
+2024-01,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,60,897000.0,1
+2024-01,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,40,480000.0,2
+2024-01,Tiendas Físicas,Todos,Sport B Bottle,Sport,248,3699000.0,1
+2024-01,Tiendas Físicas,Todos,Classic A Bottle,Classic,186,2209800.0,2
+2024-01,Todos,Buenos Aires,Sport B Bottle,Sport,187,2776500.0,1
+2024-01,Todos,Buenos Aires,Classic A Bottle,Classic,152,1802400.0,2
+2024-01,Todos,Córdoba,Sport B Bottle,Sport,130,1941750.0,1
+2024-01,Todos,Córdoba,Classic A Bottle,Classic,130,1544400.0,2
+2024-01,Todos,Mendoza,Sport B Bottle,Sport,87,1275000.0,1
+2024-01,Todos,Mendoza,Classic A Bottle,Classic,56,670800.0,2
+2024-01,Todos,Santa Fe,Sport B Bottle,Sport,115,1713000.0,1
+2024-01,Todos,Santa Fe,Classic A Bottle,Classic,102,1218600.0,2
+2024-01,Todos,Todos,Sport B Bottle,Sport,519,7706250.0,1
+2024-01,Todos,Todos,Classic A Bottle,Classic,440,5236200.0,2
+2024-02,Tienda Online,Buenos Aires,Sport B Bottle,Sport,126,1845000.0,1
+2024-02,Tienda Online,Buenos Aires,Classic A Bottle,Classic,113,1350000.0,2
+2024-02,Tienda Online,Córdoba,Sport B Bottle,Sport,77,1155000.0,1
+2024-02,Tienda Online,Córdoba,Classic A Bottle,Classic,78,930600.0,2
+2024-02,Tienda Online,Mendoza,Sport B Bottle,Sport,37,522750.0,1
+2024-02,Tienda Online,Mendoza,Classic A Bottle,Classic,43,514800.0,2
+2024-02,Tienda Online,Santa Fe,Classic A Bottle,Classic,73,861000.0,1
+2024-02,Tienda Online,Santa Fe,Sport B Bottle,Sport,56,816750.0,2
+2024-02,Tienda Online,Todos,Sport B Bottle,Sport,296,4339500.0,1
+2024-02,Tienda Online,Todos,Classic A Bottle,Classic,307,3656400.0,2
+2024-02,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,97,1428750.0,1
+2024-02,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,96,1081200.0,2
+2024-02,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,55,823500.0,1
+2024-02,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,58,690000.0,2
+2024-02,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,46,682500.0,1
+2024-02,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,41,488400.0,2
+2024-02,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,63,924750.0,1
+2024-02,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,67,783000.0,2
+2024-02,Tiendas Físicas,Todos,Sport B Bottle,Sport,261,3859500.0,1
+2024-02,Tiendas Físicas,Todos,Classic A Bottle,Classic,262,3042600.0,2
+2024-02,Todos,Buenos Aires,Sport B Bottle,Sport,223,3273750.0,1
+2024-02,Todos,Buenos Aires,Classic A Bottle,Classic,209,2431200.0,2
+2024-02,Todos,Córdoba,Sport B Bottle,Sport,132,1978500.0,1
+2024-02,Todos,Córdoba,Classic A Bottle,Classic,136,1620600.0,2
+2024-02,Todos,Mendoza,Sport B Bottle,Sport,83,1205250.0,1
+2024-02,Todos,Mendoza,Classic A Bottle,Classic,84,1003200.0,2
+2024-02,Todos,Santa Fe,Sport B Bottle,Sport,119,1741500.0,1
+2024-02,Todos,Santa Fe,Classic A Bottle,Classic,140,1644000.0,2
+2024-02,Todos,Todos,Sport B Bottle,Sport,557,8199000.0,1
+2024-02,Todos,Todos,Classic A Bottle,Classic,569,6699000.0,2
+2024-03,Tienda Online,Buenos Aires,Classic A Bottle,Classic,130,1555800.0,1
+2024-03,Tienda Online,Buenos Aires,Sport B Bottle,Sport,103,1512000.0,2
+2024-03,Tienda Online,Córdoba,Classic A Bottle,Classic,71,830400.0,1
+2024-03,Tienda Online,Córdoba,Sport B Bottle,Sport,50,746250.0,2
+2024-03,Tienda Online,Mendoza,Classic A Bottle,Classic,39,463200.0,1
+2024-03,Tienda Online,Mendoza,Sport B Bottle,Sport,29,435000.0,2
+2024-03,Tienda Online,Santa Fe,Classic A Bottle,Classic,101,1149000.0,1
+2024-03,Tienda Online,Santa Fe,Sport B Bottle,Sport,55,801000.0,2
+2024-03,Tienda Online,Todos,Classic A Bottle,Classic,341,3998400.0,1
+2024-03,Tienda Online,Todos,Sport B Bottle,Sport,237,3494250.0,2
+2024-03,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,89,1065600.0,1
+2024-03,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,61,900000.0,2
+2024-03,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,85,987000.0,1
+2024-03,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,56,834000.0,2
+2024-03,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,32,475500.0,1
+2024-03,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,35,414000.0,2
+2024-03,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,80,936600.0,1
+2024-03,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,52,780000.0,2
+2024-03,Tiendas Físicas,Todos,Classic A Bottle,Classic,289,3403200.0,1
+2024-03,Tiendas Físicas,Todos,Sport B Bottle,Sport,201,2989500.0,2
+2024-03,Todos,Buenos Aires,Classic A Bottle,Classic,219,2621400.0,1
+2024-03,Todos,Buenos Aires,Sport B Bottle,Sport,164,2412000.0,2
+2024-03,Todos,Córdoba,Classic A Bottle,Classic,156,1817400.0,1
+2024-03,Todos,Córdoba,Sport B Bottle,Sport,106,1580250.0,2
+2024-03,Todos,Mendoza,Sport B Bottle,Sport,61,910500.0,1
+2024-03,Todos,Mendoza,Classic A Bottle,Classic,74,877200.0,2
+2024-03,Todos,Santa Fe,Classic A Bottle,Classic,181,2085600.0,1
+2024-03,Todos,Santa Fe,Sport B Bottle,Sport,107,1581000.0,2
+2024-03,Todos,Todos,Classic A Bottle,Classic,630,7401600.0,1
+2024-03,Todos,Todos,Sport B Bottle,Sport,438,6483750.0,2
+2024-04,Tienda Online,Buenos Aires,Classic A Bottle,Classic,122,1456800.0,1
+2024-04,Tienda Online,Buenos Aires,Sport B Bottle,Sport,83,1238250.0,2
+2024-04,Tienda Online,Córdoba,Classic A Bottle,Classic,66,786600.0,1
+2024-04,Tienda Online,Córdoba,Sport B Bottle,Sport,40,600000.0,2
+2024-04,Tienda Online,Mendoza,Classic A Bottle,Classic,38,455400.0,1
+2024-04,Tienda Online,Mendoza,Sport B Bottle,Sport,29,432750.0,2
+2024-04,Tienda Online,Santa Fe,Sport B Bottle,Sport,67,996750.0,1
+2024-04,Tienda Online,Santa Fe,Classic A Bottle,Classic,65,777000.0,2
+2024-04,Tienda Online,Todos,Classic A Bottle,Classic,291,3475800.0,1
+2024-04,Tienda Online,Todos,Sport B Bottle,Sport,219,3267750.0,2
+2024-04,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,58,693600.0,1
+2024-04,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,42,627000.0,2
+2024-04,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,58,691200.0,1
+2024-04,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,37,550500.0,2
+2024-04,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,43,643500.0,1
+2024-04,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,43,516000.0,2
+2024-04,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,88,1050000.0,1
+2024-04,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,59,853500.0,2
+2024-04,Tiendas Físicas,Todos,Classic A Bottle,Classic,247,2950800.0,1
+2024-04,Tiendas Físicas,Todos,Sport B Bottle,Sport,181,2674500.0,2
+2024-04,Todos,Buenos Aires,Classic A Bottle,Classic,180,2150400.0,1
+2024-04,Todos,Buenos Aires,Sport B Bottle,Sport,125,1865250.0,2
+2024-04,Todos,Córdoba,Classic A Bottle,Classic,124,1477800.0,1
+2024-04,Todos,Córdoba,Sport B Bottle,Sport,77,1150500.0,2
+2024-04,Todos,Mendoza,Sport B Bottle,Sport,72,1076250.0,1
+2024-04,Todos,Mendoza,Classic A Bottle,Classic,81,971400.0,2
+2024-04,Todos,Santa Fe,Sport B Bottle,Sport,126,1850250.0,1
+2024-04,Todos,Santa Fe,Classic A Bottle,Classic,153,1827000.0,2
+2024-04,Todos,Todos,Classic A Bottle,Classic,538,6426600.0,1
+2024-04,Todos,Todos,Sport B Bottle,Sport,400,5942250.0,2
+2024-05,Tienda Online,Buenos Aires,Classic A Bottle,Classic,161,1822200.0,1
+2024-05,Tienda Online,Buenos Aires,Sport B Bottle,Sport,97,1379250.0,2
+2024-05,Tienda Online,Córdoba,Classic A Bottle,Classic,72,801600.0,1
+2024-05,Tienda Online,Córdoba,Sport B Bottle,Sport,53,730500.0,2
+2024-05,Tienda Online,Mendoza,Sport B Bottle,Sport,44,624000.0,1
+2024-05,Tienda Online,Mendoza,Classic A Bottle,Classic,38,438600.0,2
+2024-05,Tienda Online,Santa Fe,Classic A Bottle,Classic,93,1061400.0,1
+2024-05,Tienda Online,Santa Fe,Sport B Bottle,Sport,57,808500.0,2
+2024-05,Tienda Online,Todos,Classic A Bottle,Classic,364,4123800.0,1
+2024-05,Tienda Online,Todos,Sport B Bottle,Sport,251,3542250.0,2
+2024-05,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,66,957000.0,1
+2024-05,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,59,694800.0,2
+2024-05,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,67,933000.0,1
+2024-05,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,64,764400.0,2
+2024-05,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,49,584400.0,1
+2024-05,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,29,429000.0,2
+2024-05,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,59,877500.0,1
+2024-05,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,34,398400.0,2
+2024-05,Tiendas Físicas,Todos,Sport B Bottle,Sport,221,3196500.0,1
+2024-05,Tiendas Físicas,Todos,Classic A Bottle,Classic,206,2442000.0,2
+2024-05,Todos,Buenos Aires,Classic A Bottle,Classic,220,2517000.0,1
+2024-05,Todos,Buenos Aires,Sport B Bottle,Sport,163,2336250.0,2
+2024-05,Todos,Córdoba,Sport B Bottle,Sport,120,1663500.0,1
+2024-05,Todos,Córdoba,Classic A Bottle,Classic,136,1566000.0,2
+2024-05,Todos,Mendoza,Sport B Bottle,Sport,73,1053000.0,1
+2024-05,Todos,Mendoza,Classic A Bottle,Classic,87,1023000.0,2
+2024-05,Todos,Santa Fe,Sport B Bottle,Sport,116,1686000.0,1
+2024-05,Todos,Santa Fe,Classic A Bottle,Classic,127,1459800.0,2
+2024-05,Todos,Todos,Sport B Bottle,Sport,472,6738750.0,1
+2024-05,Todos,Todos,Classic A Bottle,Classic,570,6565800.0,2
+2024-06,Tienda Online,Buenos Aires,Sport B Bottle,Sport,173,2547750.0,1
+2024-06,Tienda Online,Buenos Aires,Classic A Bottle,Classic,126,1471200.0,2
+2024-06,Tienda Online,Córdoba,Sport B Bottle,Sport,66,986250.0,1
+2024-06,Tienda Online,Córdoba,Classic A Bottle,Classic,66,789600.0,2
+2024-06,Tienda Online,Mendoza,Sport B Bottle,Sport,46,688500.0,1
+2024-06,Tienda Online,Mendoza,Classic A Bottle,Classic,28,336000.0,2
+2024-06,Tienda Online,Santa Fe,Sport B Bottle,Sport,68,1010250.0,1
+2024-06,Tienda Online,Santa Fe,Classic A Bottle,Classic,81,970800.0,2
+2024-06,Tienda Online,Todos,Sport B Bottle,Sport,353,5232750.0,1
+2024-06,Tienda Online,Todos,Classic A Bottle,Classic,301,3567600.0,2
+2024-06,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,81,1207500.0,1
+2024-06,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,91,1089600.0,2
+2024-06,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,95,1416000.0,1
+2024-06,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,61,729600.0,2
+2024-06,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,51,743250.0,1
+2024-06,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,44,524400.0,2
+2024-06,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,60,889500.0,1
+2024-06,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,53,618600.0,2
+2024-06,Tiendas Físicas,Todos,Sport B Bottle,Sport,287,4256250.0,1
+2024-06,Tiendas Físicas,Todos,Classic A Bottle,Classic,249,2962200.0,2
+2024-06,Todos,Buenos Aires,Sport B Bottle,Sport,254,3755250.0,1
+2024-06,Todos,Buenos Aires,Classic A Bottle,Classic,217,2560800.0,2
+2024-06,Todos,Córdoba,Sport B Bottle,Sport,161,2402250.0,1
+2024-06,Todos,Córdoba,Classic A Bottle,Classic,127,1519200.0,2
+2024-06,Todos,Mendoza,Sport B Bottle,Sport,97,1431750.0,1
+2024-06,Todos,Mendoza,Classic A Bottle,Classic,72,860400.0,2
+2024-06,Todos,Santa Fe,Sport B Bottle,Sport,128,1899750.0,1
+2024-06,Todos,Santa Fe,Classic A Bottle,Classic,134,1589400.0,2
+2024-06,Todos,Todos,Sport B Bottle,Sport,640,9489000.0,1
+2024-06,Todos,Todos,Classic A Bottle,Classic,550,6529800.0,2
+2024-07,Tienda Online,Buenos Aires,Classic A Bottle,Classic,113,1354800.0,1
+2024-07,Tienda Online,Buenos Aires,Sport B Bottle,Sport,84,1257750.0,2
+2024-07,Tienda Online,Córdoba,Classic A Bottle,Classic,54,625800.0,1
+2024-07,Tienda Online,Córdoba,Sport B Bottle,Sport,16,240000.0,2
+2024-07,Tienda Online,Mendoza,Classic A Bottle,Classic,41,472200.0,1
+2024-07,Tienda Online,Mendoza,Sport B Bottle,Sport,32,462000.0,2
+2024-07,Tienda Online,Santa Fe,Classic A Bottle,Classic,67,800400.0,1
+2024-07,Tienda Online,Santa Fe,Sport B Bottle,Sport,51,705000.0,2
+2024-07,Tienda Online,Todos,Classic A Bottle,Classic,275,3253200.0,1
+2024-07,Tienda Online,Todos,Sport B Bottle,Sport,183,2664750.0,2
+2024-07,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,68,1012500.0,1
+2024-07,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,52,618000.0,2
+2024-07,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,78,898800.0,1
+2024-07,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,38,565500.0,2
+2024-07,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,56,652200.0,1
+2024-07,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,27,402000.0,2
+2024-07,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,35,523500.0,1
+2024-07,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,38,456000.0,2
+2024-07,Tiendas Físicas,Todos,Classic A Bottle,Classic,224,2625000.0,1
+2024-07,Tiendas Físicas,Todos,Sport B Bottle,Sport,168,2503500.0,2
+2024-07,Todos,Buenos Aires,Sport B Bottle,Sport,152,2270250.0,1
+2024-07,Todos,Buenos Aires,Classic A Bottle,Classic,165,1972800.0,2
+2024-07,Todos,Córdoba,Classic A Bottle,Classic,132,1524600.0,1
+2024-07,Todos,Córdoba,Sport B Bottle,Sport,54,805500.0,2
+2024-07,Todos,Mendoza,Classic A Bottle,Classic,97,1124400.0,1
+2024-07,Todos,Mendoza,Sport B Bottle,Sport,59,864000.0,2
+2024-07,Todos,Santa Fe,Classic A Bottle,Classic,105,1256400.0,1
+2024-07,Todos,Santa Fe,Sport B Bottle,Sport,86,1228500.0,2
+2024-07,Todos,Todos,Classic A Bottle,Classic,499,5878200.0,1
+2024-07,Todos,Todos,Sport B Bottle,Sport,351,5168250.0,2
+2024-08,Tienda Online,Buenos Aires,Classic A Bottle,Classic,148,1765800.0,1
+2024-08,Tienda Online,Buenos Aires,Sport B Bottle,Sport,97,1445250.0,2
+2024-08,Tienda Online,Córdoba,Classic A Bottle,Classic,77,910800.0,1
+2024-08,Tienda Online,Córdoba,Sport B Bottle,Sport,38,563250.0,2
+2024-08,Tienda Online,Mendoza,Classic A Bottle,Classic,27,323400.0,1
+2024-08,Tienda Online,Mendoza,Sport B Bottle,Sport,19,284250.0,2
+2024-08,Tienda Online,Santa Fe,Classic A Bottle,Classic,48,574800.0,1
+2024-08,Tienda Online,Santa Fe,Sport B Bottle,Sport,38,570000.0,2
+2024-08,Tienda Online,Todos,Classic A Bottle,Classic,300,3574800.0,1
+2024-08,Tienda Online,Todos,Sport B Bottle,Sport,192,2862750.0,2
+2024-08,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,87,1026600.0,1
+2024-08,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,39,585000.0,2
+2024-08,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,64,744600.0,1
+2024-08,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,37,555000.0,2
+2024-08,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,70,819000.0,1
+2024-08,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,50,723000.0,2
+2024-08,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,72,861600.0,1
+2024-08,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,26,390000.0,2
+2024-08,Tiendas Físicas,Todos,Classic A Bottle,Classic,293,3451800.0,1
+2024-08,Tiendas Físicas,Todos,Sport B Bottle,Sport,152,2253000.0,2
+2024-08,Todos,Buenos Aires,Classic A Bottle,Classic,235,2792400.0,1
+2024-08,Todos,Buenos Aires,Sport B Bottle,Sport,136,2030250.0,2
+2024-08,Todos,Córdoba,Classic A Bottle,Classic,141,1655400.0,1
+2024-08,Todos,Córdoba,Sport B Bottle,Sport,75,1118250.0,2
+2024-08,Todos,Mendoza,Classic A Bottle,Classic,97,1142400.0,1
+2024-08,Todos,Mendoza,Sport B Bottle,Sport,69,1007250.0,2
+2024-08,Todos,Santa Fe,Classic A Bottle,Classic,120,1436400.0,1
+2024-08,Todos,Santa Fe,Sport B Bottle,Sport,64,960000.0,2
+2024-08,Todos,Todos,Classic A Bottle,Classic,593,7026600.0,1
+2024-08,Todos,Todos,Sport B Bottle,Sport,344,5115750.0,2
+2024-09,Tienda Online,Buenos Aires,Classic A Bottle,Classic,130,1551000.0,1
+2024-09,Tienda Online,Buenos Aires,Sport B Bottle,Sport,88,1319250.0,2
+2024-09,Tienda Online,Córdoba,Classic A Bottle,Classic,71,849600.0,1
+2024-09,Tienda Online,Córdoba,Sport B Bottle,Sport,45,672750.0,2
+2024-09,Tienda Online,Mendoza,Classic A Bottle,Classic,33,393000.0,1
+2024-09,Tienda Online,Mendoza,Sport B Bottle,Sport,20,297750.0,2
+2024-09,Tienda Online,Santa Fe,Classic A Bottle,Classic,77,921600.0,1
+2024-09,Tienda Online,Santa Fe,Sport B Bottle,Sport,58,870000.0,2
+2024-09,Tienda Online,Todos,Classic A Bottle,Classic,311,3715200.0,1
+2024-09,Tienda Online,Todos,Sport B Bottle,Sport,211,3159750.0,2
+2024-09,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,72,859200.0,1
+2024-09,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,51,765000.0,2
+2024-09,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,72,835200.0,1
+2024-09,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,31,465000.0,2
+2024-09,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,55,651600.0,1
+2024-09,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,26,388500.0,2
+2024-09,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,46,682500.0,1
+2024-09,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,47,556800.0,2
+2024-09,Tiendas Físicas,Todos,Classic A Bottle,Classic,246,2902800.0,1
+2024-09,Tiendas Físicas,Todos,Sport B Bottle,Sport,154,2301000.0,2
+2024-09,Todos,Buenos Aires,Classic A Bottle,Classic,202,2410200.0,1
+2024-09,Todos,Buenos Aires,Sport B Bottle,Sport,139,2084250.0,2
+2024-09,Todos,Córdoba,Classic A Bottle,Classic,143,1684800.0,1
+2024-09,Todos,Córdoba,Sport B Bottle,Sport,76,1137750.0,2
+2024-09,Todos,Mendoza,Classic A Bottle,Classic,88,1044600.0,1
+2024-09,Todos,Mendoza,Sport B Bottle,Sport,46,686250.0,2
+2024-09,Todos,Santa Fe,Sport B Bottle,Sport,104,1552500.0,1
+2024-09,Todos,Santa Fe,Classic A Bottle,Classic,124,1478400.0,2
+2024-09,Todos,Todos,Classic A Bottle,Classic,557,6618000.0,1
+2024-09,Todos,Todos,Sport B Bottle,Sport,365,5460750.0,2
+2024-10,Tienda Online,Buenos Aires,Sport B Bottle,Sport,106,1578000.0,1
+2024-10,Tienda Online,Buenos Aires,Classic A Bottle,Classic,125,1483800.0,2
+2024-10,Tienda Online,Córdoba,Sport B Bottle,Sport,75,1121250.0,1
+2024-10,Tienda Online,Córdoba,Classic A Bottle,Classic,75,892800.0,2
+2024-10,Tienda Online,Mendoza,Classic A Bottle,Classic,68,806400.0,1
+2024-10,Tienda Online,Mendoza,Sport B Bottle,Sport,53,791250.0,2
+2024-10,Tienda Online,Santa Fe,Sport B Bottle,Sport,68,1019250.0,1
+2024-10,Tienda Online,Santa Fe,Classic A Bottle,Classic,80,957600.0,2
+2024-10,Tienda Online,Todos,Sport B Bottle,Sport,302,4509750.0,1
+2024-10,Tienda Online,Todos,Classic A Bottle,Classic,348,4140600.0,2
+2024-10,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,85,972000.0,1
+2024-10,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,63,942000.0,2
+2024-10,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,55,795750.0,1
+2024-10,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,54,646800.0,2
+2024-10,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,54,808500.0,1
+2024-10,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,48,576000.0,2
+2024-10,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,73,868800.0,1
+2024-10,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,35,516000.0,2
+2024-10,Tiendas Físicas,Todos,Classic A Bottle,Classic,260,3063600.0,1
+2024-10,Tiendas Físicas,Todos,Sport B Bottle,Sport,207,3062250.0,2
+2024-10,Todos,Buenos Aires,Sport B Bottle,Sport,169,2520000.0,1
+2024-10,Todos,Buenos Aires,Classic A Bottle,Classic,210,2455800.0,2
+2024-10,Todos,Córdoba,Sport B Bottle,Sport,130,1917000.0,1
+2024-10,Todos,Córdoba,Classic A Bottle,Classic,129,1539600.0,2
+2024-10,Todos,Mendoza,Sport B Bottle,Sport,107,1599750.0,1
+2024-10,Todos,Mendoza,Classic A Bottle,Classic,116,1382400.0,2
+2024-10,Todos,Santa Fe,Classic A Bottle,Classic,153,1826400.0,1
+2024-10,Todos,Santa Fe,Sport B Bottle,Sport,103,1535250.0,2
+2024-10,Todos,Todos,Sport B Bottle,Sport,509,7572000.0,1
+2024-10,Todos,Todos,Classic A Bottle,Classic,608,7204200.0,2
+2024-11,Tienda Online,Buenos Aires,Sport B Bottle,Sport,159,2269500.0,1
+2024-11,Tienda Online,Buenos Aires,Classic A Bottle,Classic,164,1830600.0,2
+2024-11,Tienda Online,Córdoba,Sport B Bottle,Sport,83,1188000.0,1
+2024-11,Tienda Online,Córdoba,Classic A Bottle,Classic,91,1024800.0,2
+2024-11,Tienda Online,Mendoza,Sport B Bottle,Sport,55,775500.0,1
+2024-11,Tienda Online,Mendoza,Classic A Bottle,Classic,56,633600.0,2
+2024-11,Tienda Online,Santa Fe,Classic A Bottle,Classic,93,1059000.0,1
+2024-11,Tienda Online,Santa Fe,Sport B Bottle,Sport,57,791250.0,2
+2024-11,Tienda Online,Todos,Sport B Bottle,Sport,354,5024250.0,1
+2024-11,Tienda Online,Todos,Classic A Bottle,Classic,404,4548000.0,2
+2024-11,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,62,907500.0,1
+2024-11,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,62,730800.0,2
+2024-11,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,74,1035750.0,1
+2024-11,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,35,410400.0,2
+2024-11,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,46,684000.0,1
+2024-11,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,37,434400.0,2
+2024-11,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,56,822000.0,1
+2024-11,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,51,604800.0,2
+2024-11,Tiendas Físicas,Todos,Sport B Bottle,Sport,238,3449250.0,1
+2024-11,Tiendas Físicas,Todos,Classic A Bottle,Classic,185,2180400.0,2
+2024-11,Todos,Buenos Aires,Sport B Bottle,Sport,221,3177000.0,1
+2024-11,Todos,Buenos Aires,Classic A Bottle,Classic,226,2561400.0,2
+2024-11,Todos,Córdoba,Sport B Bottle,Sport,157,2223750.0,1
+2024-11,Todos,Córdoba,Classic A Bottle,Classic,126,1435200.0,2
+2024-11,Todos,Mendoza,Sport B Bottle,Sport,101,1459500.0,1
+2024-11,Todos,Mendoza,Classic A Bottle,Classic,93,1068000.0,2
+2024-11,Todos,Santa Fe,Classic A Bottle,Classic,144,1663800.0,1
+2024-11,Todos,Santa Fe,Sport B Bottle,Sport,113,1613250.0,2
+2024-11,Todos,Todos,Sport B Bottle,Sport,592,8473500.0,1
+2024-11,Todos,Todos,Classic A Bottle,Classic,589,6728400.0,2
+2024-12,Tienda Online,Buenos Aires,Sport B Bottle,Sport,269,3875250.0,1
+2024-12,Tienda Online,Buenos Aires,Classic A Bottle,Classic,233,2721000.0,2
+2024-12,Tienda Online,Córdoba,Sport B Bottle,Sport,113,1665000.0,1
+2024-12,Tienda Online,Córdoba,Classic A Bottle,Classic,86,1018200.0,2
+2024-12,Tienda Online,Mendoza,Sport B Bottle,Sport,83,1218000.0,1
+2024-12,Tienda Online,Mendoza,Classic A Bottle,Classic,60,715800.0,2
+2024-12,Tienda Online,Santa Fe,Sport B Bottle,Sport,114,1686750.0,1
+2024-12,Tienda Online,Santa Fe,Classic A Bottle,Classic,113,1322400.0,2
+2024-12,Tienda Online,Todos,Sport B Bottle,Sport,579,8445000.0,1
+2024-12,Tienda Online,Todos,Classic A Bottle,Classic,492,5777400.0,2
+2024-12,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,125,1852500.0,1
+2024-12,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,96,1128000.0,2
+2024-12,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,92,1372500.0,1
+2024-12,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,86,1027200.0,2
+2024-12,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,74,1108500.0,1
+2024-12,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,58,687600.0,2
+2024-12,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,74,1075500.0,1
+2024-12,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,49,582000.0,2
+2024-12,Tiendas Físicas,Todos,Sport B Bottle,Sport,365,5409000.0,1
+2024-12,Tiendas Físicas,Todos,Classic A Bottle,Classic,289,3424800.0,2
+2024-12,Todos,Buenos Aires,Sport B Bottle,Sport,394,5727750.0,1
+2024-12,Todos,Buenos Aires,Classic A Bottle,Classic,329,3849000.0,2
+2024-12,Todos,Córdoba,Sport B Bottle,Sport,205,3037500.0,1
+2024-12,Todos,Córdoba,Classic A Bottle,Classic,172,2045400.0,2
+2024-12,Todos,Mendoza,Sport B Bottle,Sport,157,2326500.0,1
+2024-12,Todos,Mendoza,Classic A Bottle,Classic,118,1403400.0,2
+2024-12,Todos,Santa Fe,Sport B Bottle,Sport,188,2762250.0,1
+2024-12,Todos,Santa Fe,Classic A Bottle,Classic,162,1904400.0,2
+2024-12,Todos,Todos,Sport B Bottle,Sport,944,13854000.0,1
+2024-12,Todos,Todos,Classic A Bottle,Classic,781,9202200.0,2
+2025-01,Tienda Online,Buenos Aires,Sport B Bottle,Sport,150,2244750.0,1
+2025-01,Tienda Online,Buenos Aires,Classic A Bottle,Classic,115,1359600.0,2
+2025-01,Tienda Online,Córdoba,Sport B Bottle,Sport,82,1222500.0,1
+2025-01,Tienda Online,Córdoba,Classic A Bottle,Classic,53,633000.0,2
+2025-01,Tienda Online,Mendoza,Sport B Bottle,Sport,74,1101000.0,1
+2025-01,Tienda Online,Mendoza,Classic A Bottle,Classic,43,512400.0,2
+2025-01,Tienda Online,Santa Fe,Sport B Bottle,Sport,90,1344750.0,1
+2025-01,Tienda Online,Santa Fe,Classic A Bottle,Classic,60,712800.0,2
+2025-01,Tienda Online,Todos,Sport B Bottle,Sport,396,5913000.0,1
+2025-01,Tienda Online,Todos,Classic A Bottle,Classic,271,3217800.0,2
+2025-01,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,102,1527000.0,1
+2025-01,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,75,894000.0,2
+2025-01,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,81,1203000.0,1
+2025-01,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,61,732000.0,2
+2025-01,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,57,850500.0,1
+2025-01,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,39,468000.0,2
+2025-01,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,75,1119000.0,1
+2025-01,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,63,751200.0,2
+2025-01,Tiendas Físicas,Todos,Sport B Bottle,Sport,315,4699500.0,1
+2025-01,Tiendas Físicas,Todos,Classic A Bottle,Classic,238,2845200.0,2
+2025-01,Todos,Buenos Aires,Sport B Bottle,Sport,252,3771750.0,1
+2025-01,Todos,Buenos Aires,Classic A Bottle,Classic,190,2253600.0,2
+2025-01,Todos,Córdoba,Sport B Bottle,Sport,163,2425500.0,1
+2025-01,Todos,Córdoba,Classic A Bottle,Classic,114,1365000.0,2
+2025-01,Todos,Mendoza,Sport B Bottle,Sport,131,1951500.0,1
+2025-01,Todos,Mendoza,Classic A Bottle,Classic,82,980400.0,2
+2025-01,Todos,Santa Fe,Sport B Bottle,Sport,165,2463750.0,1
+2025-01,Todos,Santa Fe,Classic A Bottle,Classic,123,1464000.0,2
+2025-01,Todos,Todos,Sport B Bottle,Sport,711,10612500.0,1
+2025-01,Todos,Todos,Classic A Bottle,Classic,509,6063000.0,2
+2025-02,Tienda Online,Buenos Aires,Sport B Bottle,Sport,145,2167500.0,1
+2025-02,Tienda Online,Buenos Aires,Classic A Bottle,Classic,170,2030400.0,2
+2025-02,Tienda Online,Córdoba,Classic A Bottle,Classic,105,1234200.0,1
+2025-02,Tienda Online,Córdoba,Sport B Bottle,Sport,71,1036500.0,2
+2025-02,Tienda Online,Mendoza,Sport B Bottle,Sport,53,756750.0,1
+2025-02,Tienda Online,Mendoza,Classic A Bottle,Classic,55,658800.0,2
+2025-02,Tienda Online,Santa Fe,Sport B Bottle,Sport,75,1098750.0,1
+2025-02,Tienda Online,Santa Fe,Classic A Bottle,Classic,89,1032600.0,2
+2025-02,Tienda Online,Todos,Sport B Bottle,Sport,344,5059500.0,1
+2025-02,Tienda Online,Todos,Classic A Bottle,Classic,419,4956000.0,2
+2025-02,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,84,1254000.0,1
+2025-02,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,105,1251600.0,2
+2025-02,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,82,1199250.0,1
+2025-02,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,64,760800.0,2
+2025-02,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,51,760500.0,1
+2025-02,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,53,631200.0,2
+2025-02,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,67,1002000.0,1
+2025-02,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,58,686400.0,2
+2025-02,Tiendas Físicas,Todos,Sport B Bottle,Sport,284,4215750.0,1
+2025-02,Tiendas Físicas,Todos,Classic A Bottle,Classic,280,3330000.0,2
+2025-02,Todos,Buenos Aires,Sport B Bottle,Sport,229,3421500.0,1
+2025-02,Todos,Buenos Aires,Classic A Bottle,Classic,275,3282000.0,2
+2025-02,Todos,Córdoba,Sport B Bottle,Sport,153,2235750.0,1
+2025-02,Todos,Córdoba,Classic A Bottle,Classic,169,1995000.0,2
+2025-02,Todos,Mendoza,Sport B Bottle,Sport,104,1517250.0,1
+2025-02,Todos,Mendoza,Classic A Bottle,Classic,108,1290000.0,2
+2025-02,Todos,Santa Fe,Sport B Bottle,Sport,142,2100750.0,1
+2025-02,Todos,Santa Fe,Classic A Bottle,Classic,147,1719000.0,2
+2025-02,Todos,Todos,Sport B Bottle,Sport,628,9275250.0,1
+2025-02,Todos,Todos,Classic A Bottle,Classic,699,8286000.0,2
+2025-03,Tienda Online,Buenos Aires,Classic A Bottle,Classic,168,1965000.0,1
+2025-03,Tienda Online,Buenos Aires,Sport B Bottle,Sport,124,1853250.0,2
+2025-03,Tienda Online,Córdoba,Classic A Bottle,Classic,90,1056600.0,1
+2025-03,Tienda Online,Córdoba,Sport B Bottle,Sport,63,906750.0,2
+2025-03,Tienda Online,Mendoza,Classic A Bottle,Classic,83,991800.0,1
+2025-03,Tienda Online,Mendoza,Sport B Bottle,Sport,46,686250.0,2
+2025-03,Tienda Online,Santa Fe,Sport B Bottle,Sport,72,1080000.0,1
+2025-03,Tienda Online,Santa Fe,Classic A Bottle,Classic,69,825000.0,2
+2025-03,Tienda Online,Todos,Classic A Bottle,Classic,410,4838400.0,1
+2025-03,Tienda Online,Todos,Sport B Bottle,Sport,305,4526250.0,2
+2025-03,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,82,1219500.0,1
+2025-03,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,91,1083600.0,2
+2025-03,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,76,907200.0,1
+2025-03,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,60,891000.0,2
+2025-03,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,66,788400.0,1
+2025-03,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,42,624000.0,2
+2025-03,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,57,659400.0,1
+2025-03,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,43,639000.0,2
+2025-03,Tiendas Físicas,Todos,Classic A Bottle,Classic,290,3438600.0,1
+2025-03,Tiendas Físicas,Todos,Sport B Bottle,Sport,227,3373500.0,2
+2025-03,Todos,Buenos Aires,Sport B Bottle,Sport,206,3072750.0,1
+2025-03,Todos,Buenos Aires,Classic A Bottle,Classic,259,3048600.0,2
+2025-03,Todos,Córdoba,Classic A Bottle,Classic,166,1963800.0,1
+2025-03,Todos,Córdoba,Sport B Bottle,Sport,123,1797750.0,2
+2025-03,Todos,Mendoza,Classic A Bottle,Classic,149,1780200.0,1
+2025-03,Todos,Mendoza,Sport B Bottle,Sport,88,1310250.0,2
+2025-03,Todos,Santa Fe,Sport B Bottle,Sport,115,1719000.0,1
+2025-03,Todos,Santa Fe,Classic A Bottle,Classic,126,1484400.0,2
+2025-03,Todos,Todos,Classic A Bottle,Classic,700,8277000.0,1
+2025-03,Todos,Todos,Sport B Bottle,Sport,532,7899750.0,2
+2025-04,Tienda Online,Buenos Aires,Classic A Bottle,Classic,162,1919400.0,1
+2025-04,Tienda Online,Buenos Aires,Sport B Bottle,Sport,109,1623750.0,2
+2025-04,Tienda Online,Córdoba,Sport B Bottle,Sport,72,1056000.0,1
+2025-04,Tienda Online,Córdoba,Classic A Bottle,Classic,79,925200.0,2
+2025-04,Tienda Online,Mendoza,Classic A Bottle,Classic,51,598800.0,1
+2025-04,Tienda Online,Mendoza,Sport B Bottle,Sport,22,329250.0,2
+2025-04,Tienda Online,Santa Fe,Sport B Bottle,Sport,79,1173750.0,1
+2025-04,Tienda Online,Santa Fe,Classic A Bottle,Classic,96,1146000.0,2
+2025-04,Tienda Online,Todos,Classic A Bottle,Classic,388,4589400.0,1
+2025-04,Tienda Online,Todos,Sport B Bottle,Sport,282,4182750.0,2
+2025-04,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,81,1204500.0,1
+2025-04,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,71,848400.0,2
+2025-04,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,53,790500.0,1
+2025-04,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,37,444000.0,2
+2025-04,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,35,417600.0,1
+2025-04,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,22,324000.0,2
+2025-04,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,53,633600.0,1
+2025-04,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,24,355500.0,2
+2025-04,Tiendas Físicas,Todos,Sport B Bottle,Sport,180,2674500.0,1
+2025-04,Tiendas Físicas,Todos,Classic A Bottle,Classic,196,2343600.0,2
+2025-04,Todos,Buenos Aires,Sport B Bottle,Sport,190,2828250.0,1
+2025-04,Todos,Buenos Aires,Classic A Bottle,Classic,233,2767800.0,2
+2025-04,Todos,Córdoba,Sport B Bottle,Sport,125,1846500.0,1
+2025-04,Todos,Córdoba,Classic A Bottle,Classic,116,1369200.0,2
+2025-04,Todos,Mendoza,Classic A Bottle,Classic,86,1016400.0,1
+2025-04,Todos,Mendoza,Sport B Bottle,Sport,44,653250.0,2
+2025-04,Todos,Santa Fe,Classic A Bottle,Classic,149,1779600.0,1
+2025-04,Todos,Santa Fe,Sport B Bottle,Sport,103,1529250.0,2
+2025-04,Todos,Todos,Classic A Bottle,Classic,584,6933000.0,1
+2025-04,Todos,Todos,Sport B Bottle,Sport,462,6857250.0,2
+2025-05,Tienda Online,Buenos Aires,Sport B Bottle,Sport,162,2315250.0,1
+2025-05,Tienda Online,Buenos Aires,Classic A Bottle,Classic,183,2029800.0,2
+2025-05,Tienda Online,Córdoba,Sport B Bottle,Sport,90,1263000.0,1
+2025-05,Tienda Online,Córdoba,Classic A Bottle,Classic,99,1085400.0,2
+2025-05,Tienda Online,Mendoza,Sport B Bottle,Sport,50,705750.0,1
+2025-05,Tienda Online,Mendoza,Classic A Bottle,Classic,45,525000.0,2
+2025-05,Tienda Online,Santa Fe,Classic A Bottle,Classic,119,1316400.0,1
+2025-05,Tienda Online,Santa Fe,Sport B Bottle,Sport,75,1032750.0,2
+2025-05,Tienda Online,Todos,Sport B Bottle,Sport,377,5316750.0,1
+2025-05,Tienda Online,Todos,Classic A Bottle,Classic,446,4956600.0,2
+2025-05,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,57,849000.0,1
+2025-05,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,57,678000.0,2
+2025-05,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,54,804000.0,1
+2025-05,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,48,572400.0,2
+2025-05,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,35,520500.0,1
+2025-05,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,38,452400.0,2
+2025-05,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,85,989400.0,1
+2025-05,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,51,760500.0,2
+2025-05,Tiendas Físicas,Todos,Sport B Bottle,Sport,197,2934000.0,1
+2025-05,Tiendas Físicas,Todos,Classic A Bottle,Classic,228,2692200.0,2
+2025-05,Todos,Buenos Aires,Sport B Bottle,Sport,219,3164250.0,1
+2025-05,Todos,Buenos Aires,Classic A Bottle,Classic,240,2707800.0,2
+2025-05,Todos,Córdoba,Sport B Bottle,Sport,144,2067000.0,1
+2025-05,Todos,Córdoba,Classic A Bottle,Classic,147,1657800.0,2
+2025-05,Todos,Mendoza,Sport B Bottle,Sport,85,1226250.0,1
+2025-05,Todos,Mendoza,Classic A Bottle,Classic,83,977400.0,2
+2025-05,Todos,Santa Fe,Classic A Bottle,Classic,204,2305800.0,1
+2025-05,Todos,Santa Fe,Sport B Bottle,Sport,126,1793250.0,2
+2025-05,Todos,Todos,Sport B Bottle,Sport,574,8250750.0,1
+2025-05,Todos,Todos,Classic A Bottle,Classic,674,7648800.0,2
+2025-06,Tienda Online,Buenos Aires,Sport B Bottle,Sport,179,2589750.0,1
+2025-06,Tienda Online,Buenos Aires,Classic A Bottle,Classic,177,2008200.0,2
+2025-06,Tienda Online,Córdoba,Sport B Bottle,Sport,74,1105500.0,1
+2025-06,Tienda Online,Córdoba,Classic A Bottle,Classic,64,760800.0,2
+2025-06,Tienda Online,Mendoza,Sport B Bottle,Sport,81,1208250.0,1
+2025-06,Tienda Online,Mendoza,Classic A Bottle,Classic,50,592800.0,2
+2025-06,Tienda Online,Santa Fe,Sport B Bottle,Sport,99,1446750.0,1
+2025-06,Tienda Online,Santa Fe,Classic A Bottle,Classic,68,814800.0,2
+2025-06,Tienda Online,Todos,Sport B Bottle,Sport,433,6350250.0,1
+2025-06,Tienda Online,Todos,Classic A Bottle,Classic,359,4176600.0,2
+2025-06,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,97,1405500.0,1
+2025-06,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,75,877800.0,2
+2025-06,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,66,978000.0,1
+2025-06,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,61,721200.0,2
+2025-06,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,51,760500.0,1
+2025-06,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,33,392400.0,2
+2025-06,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,63,934500.0,1
+2025-06,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,51,612000.0,2
+2025-06,Tiendas Físicas,Todos,Sport B Bottle,Sport,277,4078500.0,1
+2025-06,Tiendas Físicas,Todos,Classic A Bottle,Classic,220,2603400.0,2
+2025-06,Todos,Buenos Aires,Sport B Bottle,Sport,276,3995250.0,1
+2025-06,Todos,Buenos Aires,Classic A Bottle,Classic,252,2886000.0,2
+2025-06,Todos,Córdoba,Sport B Bottle,Sport,140,2083500.0,1
+2025-06,Todos,Córdoba,Classic A Bottle,Classic,125,1482000.0,2
+2025-06,Todos,Mendoza,Sport B Bottle,Sport,132,1968750.0,1
+2025-06,Todos,Mendoza,Classic A Bottle,Classic,83,985200.0,2
+2025-06,Todos,Santa Fe,Sport B Bottle,Sport,162,2381250.0,1
+2025-06,Todos,Santa Fe,Classic A Bottle,Classic,119,1426800.0,2
+2025-06,Todos,Todos,Sport B Bottle,Sport,710,10428750.0,1
+2025-06,Todos,Todos,Classic A Bottle,Classic,579,6780000.0,2
+2025-07,Tienda Online,Buenos Aires,Classic A Bottle,Classic,187,2196000.0,1
+2025-07,Tienda Online,Buenos Aires,Sport B Bottle,Sport,66,987750.0,2
+2025-07,Tienda Online,Córdoba,Classic A Bottle,Classic,64,763800.0,1
+2025-07,Tienda Online,Córdoba,Sport B Bottle,Sport,31,464250.0,2
+2025-07,Tienda Online,Mendoza,Classic A Bottle,Classic,47,563400.0,1
+2025-07,Tienda Online,Mendoza,Sport B Bottle,Sport,34,510000.0,2
+2025-07,Tienda Online,Santa Fe,Sport B Bottle,Sport,74,1056000.0,1
+2025-07,Tienda Online,Santa Fe,Classic A Bottle,Classic,76,888000.0,2
+2025-07,Tienda Online,Todos,Classic A Bottle,Classic,374,4411200.0,1
+2025-07,Tienda Online,Todos,Sport B Bottle,Sport,205,3018000.0,2
+2025-07,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,49,583200.0,1
+2025-07,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,30,444000.0,2
+2025-07,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,61,722400.0,1
+2025-07,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,39,556500.0,2
+2025-07,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,46,548400.0,1
+2025-07,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,33,495000.0,2
+2025-07,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,52,619200.0,1
+2025-07,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,32,474000.0,2
+2025-07,Tiendas Físicas,Todos,Classic A Bottle,Classic,208,2473200.0,1
+2025-07,Tiendas Físicas,Todos,Sport B Bottle,Sport,134,1969500.0,2
+2025-07,Todos,Buenos Aires,Classic A Bottle,Classic,236,2779200.0,1
+2025-07,Todos,Buenos Aires,Sport B Bottle,Sport,96,1431750.0,2
+2025-07,Todos,Córdoba,Classic A Bottle,Classic,125,1486200.0,1
+2025-07,Todos,Córdoba,Sport B Bottle,Sport,70,1020750.0,2
+2025-07,Todos,Mendoza,Classic A Bottle,Classic,93,1111800.0,1
+2025-07,Todos,Mendoza,Sport B Bottle,Sport,67,1005000.0,2
+2025-07,Todos,Santa Fe,Sport B Bottle,Sport,106,1530000.0,1
+2025-07,Todos,Santa Fe,Classic A Bottle,Classic,128,1507200.0,2
+2025-07,Todos,Todos,Classic A Bottle,Classic,582,6884400.0,1
+2025-07,Todos,Todos,Sport B Bottle,Sport,339,4987500.0,2
+2025-08,Tienda Online,Buenos Aires,Classic A Bottle,Classic,169,2005200.0,1
+2025-08,Tienda Online,Buenos Aires,Sport B Bottle,Sport,118,1748250.0,2
+2025-08,Tienda Online,Córdoba,Classic A Bottle,Classic,101,1206600.0,1
+2025-08,Tienda Online,Córdoba,Sport B Bottle,Sport,69,1027500.0,2
+2025-08,Tienda Online,Mendoza,Classic A Bottle,Classic,79,918600.0,1
+2025-08,Tienda Online,Mendoza,Sport B Bottle,Sport,52,726000.0,2
+2025-08,Tienda Online,Santa Fe,Classic A Bottle,Classic,92,1101600.0,1
+2025-08,Tienda Online,Santa Fe,Sport B Bottle,Sport,65,973500.0,2
+2025-08,Tienda Online,Todos,Classic A Bottle,Classic,441,5232000.0,1
+2025-08,Tienda Online,Todos,Sport B Bottle,Sport,304,4475250.0,2
+2025-08,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,73,871200.0,1
+2025-08,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,51,763500.0,2
+2025-08,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,60,714000.0,1
+2025-08,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,42,627000.0,2
+2025-08,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,52,762000.0,1
+2025-08,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,55,642600.0,2
+2025-08,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,66,792000.0,1
+2025-08,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,45,675000.0,2
+2025-08,Tiendas Físicas,Todos,Classic A Bottle,Classic,254,3019800.0,1
+2025-08,Tiendas Físicas,Todos,Sport B Bottle,Sport,190,2827500.0,2
+2025-08,Todos,Buenos Aires,Classic A Bottle,Classic,242,2876400.0,1
+2025-08,Todos,Buenos Aires,Sport B Bottle,Sport,169,2511750.0,2
+2025-08,Todos,Córdoba,Classic A Bottle,Classic,161,1920600.0,1
+2025-08,Todos,Córdoba,Sport B Bottle,Sport,111,1654500.0,2
+2025-08,Todos,Mendoza,Classic A Bottle,Classic,134,1561200.0,1
+2025-08,Todos,Mendoza,Sport B Bottle,Sport,104,1488000.0,2
+2025-08,Todos,Santa Fe,Classic A Bottle,Classic,158,1893600.0,1
+2025-08,Todos,Santa Fe,Sport B Bottle,Sport,110,1648500.0,2
+2025-08,Todos,Todos,Classic A Bottle,Classic,695,8251800.0,1
+2025-08,Todos,Todos,Sport B Bottle,Sport,494,7302750.0,2
+2025-09,Tienda Online,Buenos Aires,Classic A Bottle,Classic,145,1735200.0,1
+2025-09,Tienda Online,Buenos Aires,Sport B Bottle,Sport,109,1633500.0,2
+2025-09,Tienda Online,Córdoba,Classic A Bottle,Classic,119,1379400.0,1
+2025-09,Tienda Online,Córdoba,Sport B Bottle,Sport,75,1108500.0,2
+2025-09,Tienda Online,Mendoza,Sport B Bottle,Sport,50,725250.0,1
+2025-09,Tienda Online,Mendoza,Classic A Bottle,Classic,58,674400.0,2
+2025-09,Tienda Online,Santa Fe,Classic A Bottle,Classic,79,947400.0,1
+2025-09,Tienda Online,Santa Fe,Sport B Bottle,Sport,57,852000.0,2
+2025-09,Tienda Online,Todos,Classic A Bottle,Classic,401,4736400.0,1
+2025-09,Tienda Online,Todos,Sport B Bottle,Sport,291,4319250.0,2
+2025-09,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,57,849000.0,1
+2025-09,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,34,405600.0,2
+2025-09,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,61,883500.0,1
+2025-09,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,38,452400.0,2
+2025-09,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,44,524400.0,1
+2025-09,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,29,435000.0,2
+2025-09,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,35,415200.0,1
+2025-09,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,28,412500.0,2
+2025-09,Tiendas Físicas,Todos,Sport B Bottle,Sport,175,2580000.0,1
+2025-09,Tiendas Físicas,Todos,Classic A Bottle,Classic,151,1797600.0,2
+2025-09,Todos,Buenos Aires,Sport B Bottle,Sport,166,2482500.0,1
+2025-09,Todos,Buenos Aires,Classic A Bottle,Classic,179,2140800.0,2
+2025-09,Todos,Córdoba,Sport B Bottle,Sport,136,1992000.0,1
+2025-09,Todos,Córdoba,Classic A Bottle,Classic,157,1831800.0,2
+2025-09,Todos,Mendoza,Classic A Bottle,Classic,102,1198800.0,1
+2025-09,Todos,Mendoza,Sport B Bottle,Sport,79,1160250.0,2
+2025-09,Todos,Santa Fe,Classic A Bottle,Classic,114,1362600.0,1
+2025-09,Todos,Santa Fe,Sport B Bottle,Sport,85,1264500.0,2
+2025-09,Todos,Todos,Sport B Bottle,Sport,466,6899250.0,1
+2025-09,Todos,Todos,Classic A Bottle,Classic,552,6534000.0,2
+Todos,Tienda Online,Buenos Aires,Sport B Bottle,Sport,2645,38881500.0,1
+Todos,Tienda Online,Buenos Aires,Classic A Bottle,Classic,3133,36712800.0,2
+Todos,Tienda Online,Córdoba,Sport B Bottle,Sport,1357,19965000.0,1
+Todos,Tienda Online,Córdoba,Classic A Bottle,Classic,1659,19428600.0,2
+Todos,Tienda Online,Mendoza,Sport B Bottle,Sport,953,13914750.0,1
+Todos,Tienda Online,Mendoza,Classic A Bottle,Classic,1004,11852400.0,2
+Todos,Tienda Online,Santa Fe,Sport B Bottle,Sport,1430,20949750.0,1
+Todos,Tienda Online,Santa Fe,Classic A Bottle,Classic,1701,19978200.0,2
+Todos,Tienda Online,Todos,Sport B Bottle,Sport,6385,93711000.0,1
+Todos,Tienda Online,Todos,Classic A Bottle,Classic,7497,87972000.0,2
+Todos,Tiendas Físicas,Buenos Aires,Sport B Bottle,Sport,1485,22026750.0,1
+Todos,Tiendas Físicas,Buenos Aires,Classic A Bottle,Classic,1537,18154200.0,2
+Todos,Tiendas Físicas,Córdoba,Sport B Bottle,Sport,1231,18114750.0,1
+Todos,Tiendas Físicas,Córdoba,Classic A Bottle,Classic,1273,15073200.0,2
+Todos,Tiendas Físicas,Mendoza,Sport B Bottle,Sport,893,13260750.0,1
+Todos,Tiendas Físicas,Mendoza,Classic A Bottle,Classic,979,11620200.0,2
+Todos,Tiendas Físicas,Santa Fe,Sport B Bottle,Sport,1053,15603750.0,1
+Todos,Tiendas Físicas,Santa Fe,Classic A Bottle,Classic,1212,14355000.0,2
+Todos,Tiendas Físicas,Todos,Sport B Bottle,Sport,4662,69006000.0,1
+Todos,Tiendas Físicas,Todos,Classic A Bottle,Classic,5001,59202600.0,2
+Todos,Todos,Buenos Aires,Sport B Bottle,Sport,4130,60908250.0,1
+Todos,Todos,Buenos Aires,Classic A Bottle,Classic,4670,54867000.0,2
+Todos,Todos,Córdoba,Sport B Bottle,Sport,2588,38079750.0,1
+Todos,Todos,Córdoba,Classic A Bottle,Classic,2932,34501800.0,2
+Todos,Todos,Mendoza,Sport B Bottle,Sport,1846,27175500.0,1
+Todos,Todos,Mendoza,Classic A Bottle,Classic,1983,23472600.0,2
+Todos,Todos,Santa Fe,Sport B Bottle,Sport,2483,36553500.0,1
+Todos,Todos,Santa Fe,Classic A Bottle,Classic,2913,34333200.0,2
+Todos,Todos,Todos,Sport B Bottle,Sport,11047,162717000.0,1
+Todos,Todos,Todos,Classic A Bottle,Classic,12498,147174600.0,2
