@@ -1,0 +1,5 @@
+payment_method_key,method,method_name
+1,CARD,Tarjeta
+2,CASH,Efectivo
+3,GATEWAY,Pasarela / Mercado Pago
+4,TRANSFER,Transferencia

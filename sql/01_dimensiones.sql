@@ -62,3 +62,196 @@ LEFT JOIN raw.product_category AS f ON f.category_id = c.parent_id;    -- famili
 --       CAST(strftime(fecha, '%Y%m%d') AS INTEGER)
 --   * Si algo puede venir vacío (ej. NPS anónimos, sin cliente), podés agregar
 --     una fila "Desconocido" con clave -1 y usar COALESCE(clave, -1) en los hechos.
+
+-- ---------------------------------------------------------------------
+-- dim_date: una fila por día entre el 01/01/2024 y el 30/09/2025
+-- date_key es una clave "inteligente" AAAAMMDD (ej. 20240131)
+-- ---------------------------------------------------------------------
+
+CREATE TABLE dim_date (
+    date_key    INTEGER PRIMARY KEY,
+    full_date DATE NOT NULL,
+    year SMALLINT NOT NULL,
+    quarter SMALLINT NOT NULL,
+    month SMALLINT NOT NULL,
+    month_name VARCHAR NOT NULL,
+    year_month VARCHAR NOT NULL,
+    week_of_year SMALLINT NOT NULL,
+    day SMALLINT NOT NULL,
+    day_of_week SMALLINT NOT NULL,
+    day_name VARCHAR NOT NULL,
+    is_weekend BOOLEAN NOT NULL
+);
+
+INSERT INTO dim_date
+SELECT
+    CAST(strftime(d, '%Y%m%d') AS INTEGER),
+    d,
+    year(d),
+    quarter(d),
+    month(d),
+    monthname(d),
+    strftime(d, '%Y-%m'),
+    weekofyear(d),
+    day(d),
+    isodow(d),
+    dayname(d),
+    isodow(d) IN (6,7)
+FROM (SELECT CAST(range AS DATE) AS d
+      FROM range(DATE '2024-01-01', DATE '2025-10-01', INTERVAL 1 DAY));
+
+CREATE TABLE dim_channel (
+    channel_key  INTEGER PRIMARY KEY,
+    channel_id   INTEGER NOT NULL,
+    code         VARCHAR NOT NULL,
+    name         VARCHAR NOT NULL
+);
+
+
+-- ---------------------------------------------------------------------
+-- dim_channel: ONLINE / OFFLINE
+-- ---------------------------------------------------------------------
+
+INSERT INTO dim_channel
+SELECT ROW_NUMBER() OVER (ORDER BY channel_id), channel_id, code, name
+FROM raw.channel;
+
+-- ---------------------------------------------------------------------
+-- dim_province
+-- ---------------------------------------------------------------------
+
+CREATE TABLE dim_province (
+    province_key INTEGER PRIMARY KEY,
+    province_id INTEGER NOT NULL,
+    name VARCHAR NOT NULL,
+    code VARCHAR
+); 
+
+INSERT INTO dim_province
+SELECT ROW_NUMBER() OVER (ORDER BY province_id), province_id, name, code
+FROM raw.province;
+
+-- ---------------------------------------------------------------------
+-- dim_customer: incluye la fila -1 "Desconocido" para NPS y sesiones anónimas
+-- ---------------------------------------------------------------------
+
+CREATE TABLE dim_customer (
+    customer_key INTEGER PRIMARY KEY,
+    customer_id INTEGER,                --- NULL en la fila Desconocido
+    email VARCHAR,
+    first_name VARCHAR,
+    last_name VARCHAR,
+    full_name VARCHAR NOT NULL,
+    phone VARCHAR,
+    status VARCHAR NOT NULL,             --- A Activo/ I dado de bajo 
+    status_name VARCHAR NOT NULL,
+    created_at TIMESTAMP
+);
+
+INSERT INTO dim_customer
+VALUES(-1, NULL, NULL, NULL, NULL, 'Desconocido', NULL, 'N/A', 'Desconocido / anónimo', NULL);
+
+INSERT INTO dim_customer
+SELECT
+    ROW_NUMBER() OVER (ORDER BY customer_id),
+    customer_id,
+    email,
+    first_name,
+    last_name,
+    first_name || ' ' || last_name AS full_name,
+    phone,
+    status,
+    CASE status WHEN 'A' THEN 'Activo' WHEN 'I' THEN 'Dado de baja' ELSE 'Desconocido' END,
+    created_at
+FROM raw.customer;
+
+-- ---------------------------------------------------------------------
+-- dim_store: incluye la fila -1 para los pedidos ONLINE (sin tienda)
+-- ---------------------------------------------------------------------
+
+CREATE TABLE dim_store (
+    store_key     INTEGER PRIMARY KEY,
+    store_id      INTEGER,
+    name          VARCHAR NOT NULL,
+    city          VARCHAR,
+    province_name VARCHAR
+);
+
+INSERT INTO dim_store VALUES (-1, NULL, 'Online (sin tienda)', NULL, NULL);
+
+INSERT INTO dim_store
+SELECT
+    ROW_NUMBER() OVER (ORDER BY s.store_id),
+    s.store_id,
+    s.name,
+    a.city,
+    p.name
+FROM raw.store AS s
+LEFT JOIN raw.address  AS a ON a.address_id  = s.address_id
+LEFT JOIN raw.province AS p ON p.province_id = a.province_id;
+
+-- --------------------------------------------------------------------
+-- dim_payment_method: método de pago
+-- -----------------------------------------------------------------------
+
+CREATE TABLE dim_payment_method (
+    payment_method_key INTEGER PRIMARY KEY,
+    method             VARCHAR NOT NULL,
+    method_name        VARCHAR NOT NULL
+);
+
+INSERT INTO dim_payment_method
+SELECT
+    ROW_NUMBER() OVER (ORDER BY method),
+    method,
+    CASE method
+        WHEN 'CARD'     THEN 'Tarjeta'
+        WHEN 'CASH'     THEN 'Efectivo'
+        WHEN 'TRANSFER' THEN 'Transferencia'
+        WHEN 'GATEWAY'  THEN 'Pasarela / Mercado Pago'
+        ELSE method
+    END
+FROM (SELECT DISTINCT method FROM raw.payment);
+
+-- ---------------------------------------------------------------------
+-- dim_order_status: estado del pedido y si cuenta como venta
+-- ---------------------------------------------------------------------
+CREATE TABLE dim_order_status (
+    status_key INTEGER PRIMARY KEY,
+    status VARCHAR NOT NULL,
+    description VARCHAR NOT NULL,
+    is_sale BOOLEAN NOT NULL        -- TRUE solo para PAID y FULFILLED
+);
+
+INSERT INTO dim_order_status VALUES
+    (1, 'CREATED',   'Pedido creado, todavía sin pagar',         FALSE),
+    (2, 'PAID',      'Pagado, todavía no entregado',             TRUE),
+    (3, 'FULFILLED', 'Entregado o comprado en tienda',           TRUE),
+    (4, 'CANCELLED', 'Cancelado',                                FALSE),
+    (5, 'REFUNDED',  'Entregado y luego devuelto el dinero',     FALSE);
+
+-- ---------------------------------------------------------------------
+-- dim_traffic: origen + dispositivo de las sesiones web
+-- ---------------------------------------------------------------------
+CREATE TABLE dim_traffic (
+    traffic_key INTEGER PRIMARY KEY,
+    source      VARCHAR NOT NULL,
+    source_name VARCHAR NOT NULL,
+    device      VARCHAR NOT NULL
+);
+
+INSERT INTO dim_traffic
+SELECT
+    ROW_NUMBER() OVER (ORDER BY source, device),
+    source,
+    CASE source
+        WHEN 'ads'      THEN 'Publicidad en redes'
+        WHEN 'direct'   THEN 'Directo / newsletter'
+        WHEN 'referral' THEN 'Referido'
+        WHEN 'organic'  THEN 'Buscadores (orgánico)'
+        ELSE source
+    END,
+    device
+FROM (SELECT DISTINCT COALESCE(source, 'unknown') AS source,
+                      COALESCE(device, 'unknown') AS device
+      FROM raw.web_session);

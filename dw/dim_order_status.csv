@@ -1,0 +1,6 @@
+status_key,status,description,is_sale
+1,CREATED,"Pedido creado, todavía sin pagar",false
+2,PAID,"Pagado, todavía no entregado",true
+3,FULFILLED,Entregado o comprado en tienda,true
+4,CANCELLED,Cancelado,false
+5,REFUNDED,Entregado y luego devuelto el dinero,false
