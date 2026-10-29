@@ -21,6 +21,8 @@ sql/
   01_dimensiones.sql  dimensiones del modelo estrella
   02_hechos.sql       tablas de hechos con PK y FK
   03_consultas.sql    validaciones, KPIs y consultas de hallazgos
+  04_data_marts.sql   data marts detallados, esquema mart (leen del modelo estrella)
+  05_data_marts_dashboards.sql   data marts para el dashboard, con filas 'Todos' (esquema mart)
 scripts/
   _common.py          conexión a dw/ y utilidades compartidas
   kpi_ventas.py                 KPI Ventas
@@ -29,7 +31,8 @@ scripts/
   kpi_nps.py                    KPI NPS
   kpi_ventas_provincia.py       KPI Ventas por provincia
   kpi_ranking_producto.py       KPI Ranking mensual por producto
-dw/                   data warehouse: CSV de dimensiones, hechos y data marts de KPIs (se regenera)
+dw/                   data warehouse: CSV de dimensiones y hechos, y kpi_*.csv de los scripts (se regenera)
+  marts/              data marts exportados del esquema mart de DuckDB (se regenera)
 docs/                 capturas (PNG) del dashboard
 run_sql.py            ejecuta sql/ y arma el data warehouse
 requirements.txt      dependencias (DuckDB)
@@ -47,10 +50,10 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-**Armar el data warehouse y calcular los KPIs** (en este orden):
+**Armar el data warehouse, los data marts y los KPIs de Python** (en este orden):
 
 ```bash
-python run_sql.py                       # crea las dimensiones y hechos y los exporta a dw/
+python run_sql.py                       # crea el modelo estrella y los data marts (esquema mart), y los exporta a dw/ y dw/marts/
 python scripts/kpi_ventas.py
 python scripts/kpi_ticket_promedio.py
 python scripts/kpi_usuarios_activos.py
@@ -63,7 +66,7 @@ python scripts/kpi_ranking_producto.py
 
 Otros comandos útiles: `python run_sql.py --explorar` abre las tablas de origen en el navegador; `python run_sql.py --ui` arma el warehouse y lo abre para explorarlo.
 
-**Resultado esperado de los scripts:** `kpi_ventas.py` imprime `Ventas totales: $382,410,636 | Pedidos: 10,998`.
+**Resultado esperado:** `python run_sql.py` termina con `Listo. Base de datos: warehouse.duckdb`, exporta las tablas del modelo estrella a `dw/` y los 15 data marts a `dw/marts/`. Además, `kpi_ventas.py` imprime `Ventas totales: $382,410,636 | Pedidos: 10,998`.
 
 ## 4. Modelo estrella
 
@@ -466,6 +469,9 @@ Traen una fila para cada combinación de filtros, con `Todos` como total (por ej
 | `resumen_usuarios` | `mes`, `origen`, `usuarios_activos`, `sesiones` |
 | `resumen_ranking_producto` | `mes`, `canal`, `provincia`, `producto`, `categoria`, `unidades`, `ventas_items`, `ranking` |
 | `filtro_mes`, `filtro_canal`, `filtro_provincia` | valores de cada filtro, con la opción `Todos` |
+
+> **Nota.** `scripts/` genera `dw/kpi_*.csv`, que tienen el mismo contenido que los marts de `sql/04_data_marts.sql` (se verificó fila por fila, con 0 diferencias). Los marts en SQL son la fuente principal; los CSV de Python se mantienen porque el dashboard de Looker Studio se armó con ellos.
+
 
 ### 5.3 Dominios de los estados
 
