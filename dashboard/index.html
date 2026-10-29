@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EcoBottle AR - Panel de ventas</title>
+<meta name="description" content="Dashboard de EcoBottle AR: ventas, ticket, usuarios, NPS, ranking de productos e IVA. Lee los data marts calculados con SQL en DuckDB.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#060a1c;
+  --surface:#0e1530;          /* superficie de las tarjetas */
+  --surface-2:#151d3f;
+  --line:rgba(255,255,255,.08);
+  --ink:#eef1ff;              /* texto principal */
+  --ink-2:#aab2d5;            /* texto secundario */
+  --ink-3:#7c85ad;            /* texto apagado */
+  --online:#3b9be0;           /* canal Tienda Online */
+  --fisica:#d0609f;           /* canal Tiendas Fisicas */
+  --total:#9085e9;            /* totales / sin canal */
+  --iva:#c98500;
+  --envio:#199e70;
+  --radius:18px;
+  --font-display:"Sora","Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html{color-scheme:dark}
+body{
+  font-family:var(--font-body);color:var(--ink);background:var(--bg);
+  background-image:
+    radial-gradient(900px 520px at 8% -8%,rgba(70,90,230,.30),transparent 60%),
+    radial-gradient(800px 520px at 100% 100%,rgba(170,60,170,.20),transparent 60%);
+  background-attachment:fixed;
+  min-height:100vh;line-height:1.45;font-size:14px;
+}
+button,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--total);outline-offset:2px}
+
+/* ---------- estructura ---------- */
+.app{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
+.side{
+  position:sticky;top:0;height:100vh;padding:22px 16px;display:flex;flex-direction:column;gap:26px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  -webkit-backdrop-filter:blur(24px) saturate(1.5);backdrop-filter:blur(24px) saturate(1.5);
+  border-right:1px solid rgba(255,255,255,.10);box-shadow:inset -1px 0 0 rgba(255,255,255,.05);
+}
+.app{transition:grid-template-columns .35s cubic-bezier(.2,.8,.2,1)}
+.app.colapsado{grid-template-columns:78px 1fr}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.toggle{flex:none;width:32px;height:32px;display:grid;place-items:center;cursor:pointer;border-radius:10px;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--ink-2);transition:background .2s,color .2s,transform .35s}
+.toggle:hover{background:rgba(255,255,255,.12);color:var(--ink)}
+.toggle svg{width:16px;height:16px}
+.colapsado .toggle{transform:rotate(180deg)}
+.colapsado .side{padding:22px 12px}
+.colapsado .side-head{flex-direction:column;gap:14px}
+.colapsado .brand{padding:0}
+.colapsado .brand-text,.colapsado .nav span,.colapsado .side-foot{display:none}
+.colapsado .nav button{justify-content:center;padding:12px 0}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px;font-family:var(--font-display);font-weight:700;font-size:19px;letter-spacing:-.01em}
+.brand svg{flex:none}
+.brand small{display:block;font-family:var(--font-body);font-weight:500;font-size:11px;color:var(--ink-3);letter-spacing:0}
+.nav{display:flex;flex-direction:column;gap:6px}
+.nav button{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+  background:transparent;border:1px solid transparent;border-radius:12px;padding:11px 12px;color:var(--ink-2);font-weight:500;
+}
+.nav button{transition:background .2s,color .2s,transform .2s}
+.nav button:hover{background:rgba(255,255,255,.08);color:var(--ink);transform:translateX(3px)}
+.colapsado .nav button:hover{transform:none}
+.nav button[aria-selected="true"]{
+  background:linear-gradient(135deg,rgba(144,133,233,.22),rgba(59,155,224,.10));
+  border-color:rgba(144,133,233,.35);color:var(--ink);
+  box-shadow:0 0 24px rgba(144,133,233,.18);
+}
+.nav svg{width:18px;height:18px;flex:none}
+.side-foot{margin-top:auto;padding:14px;border:1px dashed var(--line);border-radius:14px;color:var(--ink-3);font-size:12px}
+.side-foot b{color:var(--ink-2);font-weight:600}
+
+main{padding:22px 26px 40px;min-width:0}
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px}
+h1{font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:-.02em}
+.sub{color:var(--ink-3);margin-top:2px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:12px;color:var(--ink-3);padding-left:4px}
+.field select{
+  appearance:none;-webkit-appearance:none;min-width:150px;cursor:pointer;
+  background:rgba(255,255,255,.06) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23aab2d5' stroke-width='1.6'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 12px center;
+  border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 34px 10px 14px;
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.14);
+  transition:border-color .2s,background-color .2s;
+}
+.field select option{background:#0e1530;color:#eef1ff}
+.field select:hover{border-color:rgba(255,255,255,.2)}
+.reset{align-self:flex-end;cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:12px;padding:10px 14px;color:var(--ink-2)}
+.reset:hover{color:var(--ink);border-color:rgba(255,255,255,.2)}
+
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.card{
+  position:relative;border-radius:var(--radius);padding:18px 18px 16px;min-width:0;isolation:isolate;
+  background:linear-gradient(155deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 45%,rgba(255,255,255,.05));
+  -webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.04),inset 0 0 28px rgba(255,255,255,.025),0 14px 34px rgba(0,0,10,.40);
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .35s;
+}
+/* reflejo que sigue al cursor (efecto vidrio liquido) */
+.card::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;opacity:0;transition:opacity .3s;
+  background:radial-gradient(360px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.16),rgba(255,255,255,.04) 40%,transparent 70%);
+}
+.card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.22);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.32),inset 0 -1px 0 rgba(255,255,255,.06),inset 0 0 36px rgba(255,255,255,.04),0 22px 44px rgba(0,0,10,.50)}
+.card:hover::before{opacity:1}
+/* orbes de color detras del vidrio */
+.orbs{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.orbs i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55}
+.orbs i:nth-child(1){width:380px;height:380px;left:22%;top:14%;background:#2f45d8}
+.orbs i:nth-child(2){width:340px;height:340px;right:6%;top:42%;background:#9b2f9f}
+.orbs i:nth-child(3){width:300px;height:300px;left:48%;bottom:-6%;background:#1b86c4;opacity:.4}
+.card h2{font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-.005em}
+.card .hint{color:var(--ink-3);font-size:12px;margin-top:2px}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+
+/* ---------- tarjetas de indicadores ---------- */
+.kpi{padding-bottom:10px;overflow:hidden}
+.kpi .label{color:var(--ink-2);font-weight:500}
+.kpi .value{font-family:var(--font-display);font-weight:700;font-size:28px;letter-spacing:-.025em;margin-top:6px;font-variant-numeric:tabular-nums}
+.kpi .meta{color:var(--ink-3);font-size:12px;margin-top:2px;min-height:17px}
+.kpi .spark{height:44px;margin:8px -6px 0}
+.kpi::after{
+  content:"";position:absolute;inset:auto -30% -55% auto;width:70%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(closest-side,var(--glow,rgba(144,133,233,.28)),transparent);pointer-events:none;
+}
+.kpi.k-online{--glow:rgba(59,155,224,.26)}
+.kpi.k-iva{--glow:rgba(201,133,0,.26)}
+.kpi.k-envio{--glow:rgba(25,158,112,.26)}
+
+.chart{position:relative;height:260px;margin-top:12px}
+.chart.tall{height:300px}
+.chart.short{height:200px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;color:var(--ink-2);font-size:12.5px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+.split{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.split div{display:flex;justify-content:space-between;gap:10px;color:var(--ink-2);font-size:13px}
+.split b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.split i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px}
+.donut-wrap{position:relative;height:240px;margin-top:8px}
+
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.chip{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.chip span{display:block;color:var(--ink-3);font-size:12px}
+.chip b{font-family:var(--font-display);font-size:17px;font-variant-numeric:tabular-nums}
+.note{margin-top:10px;color:var(--ink-3);font-size:12px}
+
+details{margin-top:12px;color:var(--ink-2)}
+summary{cursor:pointer;font-size:12.5px;color:var(--ink-2)}
+.tbl{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line)}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl th{color:var(--ink-3);font-weight:500}
+.tbl tr.sel td{background:rgba(144,133,233,.12)}
+.tbl tr.tot td{font-weight:700;color:var(--ink);border-bottom:0}
+.scroll{overflow-x:auto}
+
+.page[hidden]{display:none}
+.page{animation:entra .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.error{margin:40px auto;max-width:560px;padding:24px;border:1px solid rgba(230,103,103,.5);border-radius:var(--radius);background:rgba(230,103,103,.08)}
+.error code{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:6px}
+
+/* ---------- responsive ---------- */
+@media (max-width:1180px){.c3{grid-column:span 6}.c4,.c5,.c7,.c8{grid-column:span 12}.c6{grid-column:span 12}}
+@media (max-width:860px){
+  .toggle{display:none}
+  .app,.app.colapsado{grid-template-columns:1fr}
+  .colapsado .brand-text,.colapsado .nav span{display:block}
+  .colapsado .nav button{justify-content:flex-start;padding:11px 12px}
+  .side{position:static;height:auto;flex-direction:row;align-items:center;flex-wrap:wrap;gap:12px;padding:14px 16px;border-right:0;border-bottom:1px solid var(--line)}
+  .nav{flex-direction:row;margin-left:auto}
+  .side-foot{display:none}
+  main{padding:18px 16px 32px}
+}
+@media (max-width:560px){.c3{grid-column:span 12}.field{flex:1 1 140px}.field select{width:100%}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.card:hover{transform:none}}
+</style>
+</head>
+<body>
+<div class="orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="app" id="app">
+  <aside class="side">
+    <div class="side-head">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="30" height="30" rx="9" fill="#151d3f" stroke="rgba(255,255,255,.14)"/>
+        <path d="M13 6h6v3l1.5 2.2c.3.5.5 1 .5 1.6V24a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2V12.8c0-.6.2-1.100.5-1.600L13 9V6Z" fill="#3b9be0"/>
+        <path d="M11 17c2 1.400 4 1.400 5 .5s3-.9 5 .5V24a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2v-7Z" fill="#9085e9" opacity=".9"/>
+      </svg>
+      <div class="brand-text">EcoBottle<small>Panel de ventas</small></div>
+    </div>
+    <button class="toggle" id="toggle" type="button" aria-expanded="true" aria-controls="menu" aria-label="Contraer el panel lateral" title="Contraer / desplegar panel">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+    </button>
+    </div>
+    <nav class="nav" id="menu" role="tablist" aria-label="Secciones del panel">
+      <button role="tab" title="Resumen" id="tab-resumen" aria-selected="true" aria-controls="page-resumen">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h6v6H3zM11 3h6v4h-6zM11 9h6v8h-6zM3 11h6v6H3z"/></svg>
+        <span>Resumen</span>
+      </button>
+      <button role="tab" title="IVA y envío" id="tab-iva" aria-selected="false" aria-controls="page-iva">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h10v14l-2-1.300-1.500 1.300L10 15.700 8.500 17 7 15.700 5 17V3Z"/><path d="M8 7.500h4M8 11h4"/></svg>
+        <span>IVA y envío</span>
+      </button>
+    </nav>
+    <div class="side-foot"><b>Datos listos</b><br>Los indicadores se calculan con SQL en el esquema <b>mart</b>. Este panel solo los muestra.</div>
+  </aside>
+
+  <main>
+    <header class="top">
+      <div>
+        <h1 id="titulo">Resumen de ventas</h1>
+        <p class="sub" id="subtitulo"></p>
+      </div>
+      <div class="filters" role="group" aria-label="Filtros">
+        <div class="field"><label for="f-mes">Mes</label><select id="f-mes"></select></div>
+        <div class="field"><label for="f-canal">Canal</label><select id="f-canal"></select></div>
+        <div class="field"><label for="f-prov">Provincia</label><select id="f-prov"></select></div>
+        <button class="reset" id="reset" type="button">Restablecer</button>
+      </div>
+    </header>
+
+    <div id="error" class="error" hidden></div>
+
+    <!-- ===== Pagina: Resumen ===== -->
+    <section class="page" id="page-resumen" role="tabpanel" aria-labelledby="tab-resumen">
+      <div class="grid">
+        <article class="card kpi c3"><div class="label">Ventas</div><div class="value" id="k-ventas">-</div><div class="meta" id="m-ventas"></div><div class="spark"><canvas id="s-ventas" aria-hidden="true"></canvas></div></article>
+        <article class="card kpi c3 k-online"><div class="label">Ticket promedio</div><div class="value" id="k-ticket">-</div><div class="meta" id="m-ticket"></div><div class="spark"><canvas id="s-ticket" aria-hidden="true"></canvas></div></article>
+        <article class="card kpi c3"><div class="label">Usuarios activos</div><div class="value" id="k-usuarios">-</div><div class="meta" id="m-usuarios"></div><div class="spark"><canvas id="s-usuarios" aria-hidden="true"></canvas></div></article>
+        <article class="card kpi c3 k-iva"><div class="label">NPS</div><div class="value" id="k-nps">-</div><div class="meta" id="m-nps"></div><div class="spark"><canvas id="s-nps" aria-hidden="true"></canvas></div></article>
+
+        <article class="card c8">
+          <h2>Ventas por mes</h2>
+          <p class="hint" id="h-linea">Con IVA y envío, en pesos</p>
+          <div class="chart tall"><canvas id="c-linea" role="img" aria-label="Ventas por mes y canal"></canvas></div>
+          <details><summary>Ver tabla</summary><div class="scroll"><table class="tbl" id="t-linea"></table></div></details>
+        </article>
+
+        <article class="card c4">
+          <h2>Ventas por canal</h2>
+          <p class="hint" id="h-donut"></p>
+          <div class="donut-wrap"><canvas id="c-donut" role="img" aria-label="Ventas por canal"></canvas></div>
+          <div class="split" id="split-canal"></div>
+        </article>
+
+        <article class="card c5">
+          <h2>Ventas por provincia</h2>
+          <p class="hint" id="h-prov"></p>
+          <div class="chart"><canvas id="c-prov" role="img" aria-label="Ventas por provincia"></canvas></div>
+        </article>
+
+        <article class="card c7">
+          <h2>NPS por mes</h2>
+          <p class="hint">Promotores menos detractores, por canal</p>
+          <div class="chart short"><canvas id="c-nps" role="img" aria-label="NPS por mes"></canvas></div>
+          <div class="chips">
+            <div class="chip"><span>Promotores</span><b id="n-pro">-</b></div>
+            <div class="chip"><span>Pasivos</span><b id="n-pas">-</b></div>
+            <div class="chip"><span>Detractores</span><b id="n-det">-</b></div>
+          </div>
+          <p class="note" id="note-nps"></p>
+        </article>
+
+        <article class="card c6">
+          <h2>Productos más vendidos</h2>
+          <p class="hint" id="h-rank"></p>
+          <div class="chart short"><canvas id="c-rank" role="img" aria-label="Ranking de productos"></canvas></div>
+        </article>
+
+        <article class="card c6">
+          <h2>Usuarios activos por origen</h2>
+          <p class="hint" id="h-usr"></p>
+          <div class="chart short"><canvas id="c-usr" role="img" aria-label="Usuarios activos por origen"></canvas></div>
+          <p class="note" id="note-usr"></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== Pagina: IVA y envio ===== -->
+    <section class="page" id="page-iva" role="tabpanel" aria-labelledby="tab-iva" hidden>
+      <div class="grid">
+        <article class="card kpi c3"><div class="label">Ventas con IVA y envío</div><div class="value" id="i-ventas">-</div><div class="meta" id="mi-ventas"></div></article>
+        <article class="card kpi c3"><div class="label">Ventas sin IVA</div><div class="value" id="i-sin">-</div><div class="meta">Neto de impuestos y envío</div></article>
+        <article class="card kpi c3 k-iva"><div class="label">IVA</div><div class="value" id="i-iva">-</div><div class="meta">Impuesto cobrado en las ventas</div></article>
+        <article class="card kpi c3 k-envio"><div class="label">Envío</div><div class="value" id="i-envio">-</div><div class="meta">Costo de envío cobrado</div></article>
+
+        <article class="card c12">
+          <h2>De qué se compone cada venta, mes a mes</h2>
+          <p class="hint" id="h-iva">Ventas sin IVA, IVA y envío</p>
+          <div class="chart tall"><canvas id="c-iva" role="img" aria-label="Composición de las ventas por mes"></canvas></div>
+        </article>
+
+        <article class="card c12">
+          <h2>Detalle por provincia</h2>
+          <p class="hint" id="h-tiva"></p>
+          <div class="scroll"><table class="tbl" id="t-iva"></table></div>
+        </article>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   Dashboard EcoBottle AR
+   Todos los calculos se hacen en SQL (esquema mart).
+   Este archivo solo lee los CSV de los marts, elige la fila que
+   corresponde a los filtros ("Todos" ya viene calculado) y la muestra.
+   ============================================================ */
+const BASE = "../dw/marts/";
+const ARCHIVOS = {
+  mes: "filtro_mes", canal: "filtro_canal", provincia: "filtro_provincia",
+  ventas: "resumen_ventas", nps: "resumen_nps",
+  usuarios: "resumen_usuarios", ranking: "resumen_ranking_producto"
+};
+const TODOS = "Todos";
+const COLOR = {
+  "Tienda Online": "#3b9be0", "Tiendas Físicas": "#d0609f", [TODOS]: "#9085e9",
+  sinIva: "#9085e9", iva: "#c98500", envio: "#199e70"
+};
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+
+/* ---------- lectura de CSV ---------- */
+function parseCSV(texto){
+  const filas = texto.trim().split(/\r?\n/).map(l => l.split(","));
+  const cab = filas.shift();
+  return filas.map(f => Object.fromEntries(cab.map((c,i) => {
+    const v = f[i];
+    return [c, v !== "" && !isNaN(v) && /^-?[\d.]+$/.test(v) && c !== "mes" ? Number(v) : v];
+  })));
+}
+async function cargar(){
+  const out = {};
+  await Promise.all(Object.entries(ARCHIVOS).map(async ([k, f]) => {
+    const r = await fetch(BASE + f + ".csv");
+    if(!r.ok) throw new Error("No se pudo leer " + f + ".csv (" + r.status + ")");
+    out[k] = parseCSV(await r.text());
+  }));
+  return out;
+}
+
+/* ---------- formatos ---------- */
+const nf0 = new Intl.NumberFormat("es-AR",{maximumFractionDigits:0});
+const nf1 = new Intl.NumberFormat("es-AR",{minimumFractionDigits:1,maximumFractionDigits:1});
+const nf2 = new Intl.NumberFormat("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const nfC = new Intl.NumberFormat("es-AR",{notation:"compact",maximumFractionDigits:1});
+const peso = v => "$ " + nf0.format(v);
+const mesLargo = m => m === TODOS ? "Todo el período" : MESES[+m.slice(5)-1] + " " + m.slice(0,4);
+const mesCorto = m => MESES[+m.slice(5)-1] + " " + m.slice(2,4);
+
+/* ---------- estado y acceso a los datos ---------- */
+let D, IDX = {}, estado = {mes:TODOS, canal:TODOS, prov:TODOS, tab:"resumen"};
+const charts = {};
+const $ = id => document.getElementById(id);
+
+function indexar(){
+  IDX.ventas = new Map(D.ventas.map(r => [r.mes+"|"+r.canal+"|"+r.provincia, r]));
+  IDX.nps = new Map(D.nps.map(r => [r.mes+"|"+r.canal, r]));
+  IDX.usr = new Map(D.usuarios.map(r => [r.mes+"|"+r.origen, r]));
+  IDX.rank = new Map();
+  D.ranking.forEach(r => {
+    const k = r.mes+"|"+r.canal+"|"+r.provincia;
+    if(!IDX.rank.has(k)) IDX.rank.set(k, []);
+    IDX.rank.get(k).push(r);
+  });
+  IDX.rank.forEach(a => a.sort((x,y) => x.ranking - y.ranking));
+  IDX.meses = D.mes.map(r => r.mes).filter(m => m !== TODOS);
+  IDX.canales = D.canal.map(r => r.canal).filter(c => c !== TODOS);
+  IDX.provs = D.provincia.map(r => r.provincia).filter(p => p !== TODOS);
+  IDX.origenes = [...new Set(D.usuarios.map(r => r.origen))].filter(o => o !== TODOS);
+}
+const V = (mes,canal,prov) => IDX.ventas.get(mes+"|"+canal+"|"+prov);
+
+/* ---------- opciones de Chart.js (tema oscuro) ---------- */
+Chart.defaults.font.family = '"Manrope",system-ui,sans-serif';
+Chart.defaults.font.size = 12;
+Chart.defaults.color = "#aab2d5";
+if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){ Chart.defaults.animation = false; } else { Chart.defaults.animation.duration = 350; }
+const TIP = {
+  backgroundColor:"#0a1030", borderColor:"rgba(255,255,255,.14)", borderWidth:1, padding:10,
+  titleColor:"#eef1ff", bodyColor:"#aab2d5", boxPadding:4, usePointStyle:true
+};
+const GRID = {color:"rgba(255,255,255,.06)", drawTicks:false};
+TIP.cornerRadius = 12; TIP.caretSize = 0; TIP.displayColors = true; TIP.titleFont = {weight:"600"};
+TIP.backgroundColor = "rgba(8,12,38,.95)"; TIP.borderColor = "rgba(255,255,255,.18)";
+/* cruz vertical + halo de color sobre los puntos al pasar el cursor por una linea */
+const cruz = {id:"cruz", afterDatasetsDraw(ch){
+  const act = ch.tooltip && ch.tooltip.getActiveElements ? ch.tooltip.getActiveElements() : [];
+  if(!act.length) return;
+  const {ctx, chartArea:a} = ch, x = act[0].element.x;
+  ctx.save();
+  const g = ctx.createLinearGradient(0,a.top,0,a.bottom);
+  g.addColorStop(0,"rgba(255,255,255,0)"); g.addColorStop(.5,"rgba(255,255,255,.35)"); g.addColorStop(1,"rgba(255,255,255,0)");
+  ctx.strokeStyle = g; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x,a.top); ctx.lineTo(x,a.bottom); ctx.stroke();
+  act.forEach(e => {
+    const c = ch.data.datasets[e.datasetIndex].borderColor;
+    if(!c) return;
+    const r = ctx.createRadialGradient(e.element.x,e.element.y,0,e.element.x,e.element.y,18);
+    r.addColorStop(0,c+"88"); r.addColorStop(1,c+"00");
+    ctx.fillStyle = r; ctx.beginPath(); ctx.arc(e.element.x,e.element.y,18,0,Math.PI*2); ctx.fill();
+  });
+  ctx.restore();
+}};
+const tituloMes = items => mesLargo(IDX.meses[items[0].dataIndex]);
+function dibujar(id, config){
+  if(charts[id]) charts[id].destroy();
+  charts[id] = new Chart($(id), config);
+}
+const ejeY = fmt => ({grid:GRID, border:{display:false}, beginAtZero:true, ticks:{callback:fmt, padding:8, maxTicksLimit:5}});
+const ejeX = () => ({grid:{display:false}, border:{color:"rgba(255,255,255,.12)"}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:11}});
+
+/* ---------- indicadores superiores ---------- */
+function spark(id, valores, color){
+  dibujar(id, {
+    type:"line",
+    data:{labels:IDX.meses.map(mesCorto), datasets:[{data:valores, borderColor:color, borderWidth:2, tension:.35, pointRadius:0, fill:true,
+      backgroundColor:ctx => { const g = ctx.chart.ctx.createLinearGradient(0,0,0,44); g.addColorStop(0,color+"55"); g.addColorStop(1,color+"00"); return g; }}]},
+    options:{responsive:true, maintainAspectRatio:false, animation:false, plugins:{legend:{display:false}, tooltip:{enabled:false}}, scales:{x:{display:false}, y:{display:false}}, events:[]}
+  });
+}
+
+function renderKPIs(){
+  const {mes,canal,prov} = estado;
+  const v = V(mes,canal,prov);
+  $("k-ventas").textContent = v ? peso(v.ventas) : "Sin datos";
+  $("m-ventas").textContent = v ? nf0.format(v.pedidos) + " pedidos" : "";
+  $("k-ticket").textContent = v ? "$ " + nf2.format(v.ticket_promedio) : "Sin datos";
+  $("m-ticket").textContent = "Por pedido, con IVA y envío";
+
+  const u = IDX.usr.get(mes+"|"+TODOS);
+  $("k-usuarios").textContent = u ? nf0.format(u.usuarios_activos) : "Sin datos";
+  $("m-usuarios").textContent = u ? nf0.format(u.sesiones) + " sesiones" : "";
+
+  const n = IDX.nps.get(mes+"|"+canal);
+  $("k-nps").textContent = n ? nf1.format(n.nps) : "Sin datos";
+  $("m-nps").textContent = n ? nf0.format(n.respuestas) + " respuestas" : "";
+
+  const serie = (f, c) => IDX.meses.map(m => { const r = f(m); return r ? r[c] : null; });
+  const colCanal = COLOR[canal];
+  spark("s-ventas", serie(m => V(m,canal,prov), "ventas"), colCanal);
+  spark("s-ticket", serie(m => V(m,canal,prov), "ticket_promedio"), "#3b9be0");
+  spark("s-usuarios", serie(m => IDX.usr.get(m+"|"+TODOS), "usuarios_activos"), "#9085e9");
+  spark("s-nps", serie(m => IDX.nps.get(m+"|"+canal), "nps"), "#c98500");
+}
+
+/* ---------- ventas por mes (lineas por canal) ---------- */
+function renderLinea(){
+  const {mes,canal,prov} = estado;
+  const canales = canal === TODOS ? IDX.canales : [canal];
+  const seleccionado = IDX.meses.indexOf(mes);
+  dibujar("c-linea", {
+    type:"line", plugins:[cruz],
+    data:{labels:IDX.meses.map(mesCorto), datasets:canales.map(c => ({
+      label:c, data:IDX.meses.map(m => (V(m,c,prov)||{}).ventas ?? null),
+      borderColor:COLOR[c], backgroundColor:COLOR[c], borderWidth:2, tension:.35,
+      pointRadius:ctx => ctx.dataIndex === seleccionado ? 6 : 0, pointHoverRadius:7, pointHoverBorderWidth:3,
+      pointBorderColor:"#0e1530", pointBorderWidth:2
+    }))},
+    options:{
+      responsive:true, maintainAspectRatio:false, interaction:{mode:"index", intersect:false},
+      plugins:{legend:{display:canales.length > 1, align:"start", labels:{usePointStyle:true, boxWidth:8, boxHeight:8, padding:16}},
+        tooltip:{...TIP, callbacks:{title:tituloMes, label:c => " " + c.dataset.label + ": " + peso(c.parsed.y)}}},
+      scales:{x:ejeX(), y:ejeY(v => "$ " + nfC.format(v))}
+    }
+  });
+  $("h-linea").textContent = "Con IVA y envío, en pesos · " + (prov === TODOS ? "todas las provincias" : prov);
+  const cab = "<tr><th>Mes</th>" + canales.map(c => "<th>"+c+"</th>").join("") + "</tr>";
+  $("t-linea").innerHTML = cab + IDX.meses.map(m =>
+    "<tr class='"+(m===mes?"sel":"")+"'><td>"+mesLargo(m)+"</td>" + canales.map(c => "<td>"+peso((V(m,c,prov)||{ventas:0}).ventas)+"</td>").join("") + "</tr>").join("");
+}
+
+/* ---------- ventas por canal (dona) ---------- */
+function renderDonut(){
+  const {mes,prov} = estado;
+  const filas = IDX.canales.map(c => ({c, v:V(mes,c,prov)}));
+  const total = V(mes,TODOS,prov);
+  const centro = {id:"centro", afterDraw(ch){
+    const {ctx, chartArea:a} = ch; const x = (a.left+a.right)/2, y = (a.top+a.bottom)/2;
+    ctx.save(); ctx.textAlign="center"; ctx.fillStyle="#eef1ff"; ctx.font='700 17px Sora,Manrope,sans-serif';
+    ctx.fillText(total ? "$ " + nfC.format(total.ventas) : "-", x, y+2);
+    ctx.fillStyle="#7c85ad"; ctx.font='500 11.5px Manrope,sans-serif'; ctx.fillText("total", x, y+19); ctx.restore();
+  }};
+  dibujar("c-donut", {
+    type:"doughnut", plugins:[centro],
+    data:{labels:IDX.canales, datasets:[{data:filas.map(f => f.v ? f.v.ventas : 0), backgroundColor:IDX.canales.map(c => COLOR[c]), borderColor:"#0e1530", borderWidth:3, hoverOffset:10}]},
+    options:{responsive:true, maintainAspectRatio:false, cutout:"72%", plugins:{legend:{display:false}, tooltip:{...TIP, callbacks:{label:c => " " + c.label + ": " + peso(c.parsed)}}}}
+  });
+  $("h-donut").textContent = mesLargo(mes) + " · " + (prov === TODOS ? "todas las provincias" : prov);
+  $("split-canal").innerHTML = filas.map(f =>
+    "<div><span><i style='background:"+COLOR[f.c]+"'></i>"+f.c+"</span><b>"+(f.v ? peso(f.v.ventas) : "-")+"</b></div>").join("");
+}
+
+/* ---------- ventas por provincia ---------- */
+function renderProv(){
+  const {mes,canal,prov} = estado;
+  const col = COLOR[canal];
+  dibujar("c-prov", {
+    type:"bar",
+    data:{labels:IDX.provs, datasets:[{label:"Ventas", data:IDX.provs.map(p => (V(mes,canal,p)||{}).ventas ?? 0),
+      backgroundColor:IDX.provs.map(p => prov === TODOS || prov === p ? col : col + "55"), hoverBackgroundColor:col,
+      borderRadius:{topLeft:4, topRight:4}, borderSkipped:"bottom", maxBarThickness:44}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{...TIP, callbacks:{label:c => " " + peso(c.parsed.y)}}},
+      scales:{x:{...ejeX(), ticks:{autoSkip:false, maxRotation:0}}, y:ejeY(v => "$ " + nfC.format(v))}}
+  });
+  $("h-prov").textContent = mesLargo(mes) + " · " + (canal === TODOS ? "ambos canales" : canal);
+}
+
+/* ---------- NPS por mes ---------- */
+function renderNPS(){
+  const {mes,canal,prov} = estado;
+  const canales = canal === TODOS ? IDX.canales : [canal];
+  const seleccionado = IDX.meses.indexOf(mes);
+  dibujar("c-nps", {
+    type:"line", plugins:[cruz],
+    data:{labels:IDX.meses.map(mesCorto), datasets:canales.map(c => ({
+      label:c, data:IDX.meses.map(m => (IDX.nps.get(m+"|"+c)||{}).nps ?? null),
+      borderColor:COLOR[c], backgroundColor:COLOR[c], borderWidth:2, tension:.3,
+      pointRadius:ctx => ctx.dataIndex === seleccionado ? 6 : 0, pointHoverRadius:7, pointHoverBorderWidth:3, pointBorderColor:"#0e1530", pointBorderWidth:2
+    }))},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:"index", intersect:false},
+      plugins:{legend:{display:canales.length > 1, align:"start", labels:{usePointStyle:true, boxWidth:8, boxHeight:8, padding:16}},
+        tooltip:{...TIP, callbacks:{title:tituloMes, label:c => " " + c.dataset.label + ": " + nf1.format(c.parsed.y)}}},
+      scales:{x:ejeX(), y:{...ejeY(v => v), beginAtZero:false}}}
+  });
+  const n = IDX.nps.get(mes+"|"+canal);
+  $("n-pro").textContent = n ? nf0.format(n.promotores) : "-";
+  $("n-pas").textContent = n ? nf0.format(n.pasivos) : "-";
+  $("n-det").textContent = n ? nf0.format(n.detractores) : "-";
+  $("note-nps").textContent = prov !== TODOS ? "El NPS se mide por canal, no por provincia: este bloque no cambia con la provincia elegida." : "";
+}
+
+/* ---------- ranking de productos ---------- */
+function renderRank(){
+  const {mes,canal,prov} = estado;
+  const filas = IDX.rank.get(mes+"|"+canal+"|"+prov) || [];
+  dibujar("c-rank", {
+    type:"bar",
+    data:{labels:filas.map(r => "#" + r.ranking + "  " + r.producto), datasets:[{label:"Ventas", data:filas.map(r => r.ventas_items),
+      backgroundColor:"#9085e9", hoverBackgroundColor:"#b1a9f5", borderRadius:{topRight:4, bottomRight:4}, borderSkipped:"left", maxBarThickness:34}]},
+    options:{indexAxis:"y", responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{...TIP, callbacks:{label:c => " " + peso(c.parsed.x), afterLabel:c => " " + nf0.format(filas[c.dataIndex].unidades) + " unidades · " + filas[c.dataIndex].categoria}}},
+      scales:{x:{...ejeY(v => "$ " + nfC.format(v)), position:"bottom"}, y:{grid:{display:false}, border:{display:false}, ticks:{color:"#eef1ff"}}}}
+  });
+  $("h-rank").textContent = "Por ventas · " + mesLargo(mes) + " · " + (canal === TODOS ? "ambos canales" : canal) + " · " + (prov === TODOS ? "todas las provincias" : prov);
+}
+
+/* ---------- usuarios por origen ---------- */
+function renderUsuarios(){
+  const {mes,canal,prov} = estado;
+  const filas = IDX.origenes.map(o => ({o, r:IDX.usr.get(mes+"|"+o)}));
+  dibujar("c-usr", {
+    type:"bar",
+    data:{labels:filas.map(f => f.o), datasets:[{label:"Usuarios activos", data:filas.map(f => f.r ? f.r.usuarios_activos : 0),
+      backgroundColor:"#9085e9", hoverBackgroundColor:"#b1a9f5", borderRadius:{topRight:4, bottomRight:4}, borderSkipped:"left", maxBarThickness:26}]},
+    options:{indexAxis:"y", responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{...TIP, callbacks:{label:c => " " + nf0.format(c.parsed.x) + " usuarios", afterLabel:c => " " + nf0.format(filas[c.dataIndex].r.sesiones) + " sesiones"}}},
+      scales:{x:{...ejeY(v => nfC.format(v)), position:"bottom"}, y:{grid:{display:false}, border:{display:false}, ticks:{color:"#eef1ff"}}}}
+  });
+  $("h-usr").textContent = mesLargo(mes);
+  $("note-usr").textContent = (canal !== TODOS || prov !== TODOS) ? "La actividad web se mide por mes y origen, no por canal ni provincia: este bloque no cambia con esos filtros." : "";
+}
+
+/* ---------- pagina IVA y envio ---------- */
+function renderIVA(){
+  const {mes,canal,prov} = estado;
+  const v = V(mes,canal,prov);
+  $("i-ventas").textContent = v ? peso(v.ventas) : "Sin datos";
+  $("mi-ventas").textContent = v ? nf0.format(v.pedidos) + " pedidos" : "";
+  $("i-sin").textContent = v ? peso(v.ventas_sin_iva) : "Sin datos";
+  $("i-iva").textContent = v ? peso(v.iva) : "Sin datos";
+  $("i-envio").textContent = v ? peso(v.envio) : "Sin datos";
+
+  const sel = IDX.meses.indexOf(mes);
+  const serie = (n, k, c) => ({label:n, data:IDX.meses.map(m => (V(m,canal,prov)||{})[k] ?? 0), backgroundColor:c, borderColor:"#0e1530", borderWidth:2, borderSkipped:false, maxBarThickness:30,
+    borderRadius:0});
+  const ds = [serie("Ventas sin IVA","ventas_sin_iva",COLOR.sinIva), serie("IVA","iva",COLOR.iva), serie("Envío","envio",COLOR.envio)];
+  ds[2].borderRadius = {topLeft:4, topRight:4};
+  dibujar("c-iva", {
+    type:"bar", plugins:[cruz],
+    data:{labels:IDX.meses.map(mesCorto), datasets:ds},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:"index", intersect:false},
+      plugins:{legend:{align:"start", labels:{usePointStyle:true, boxWidth:8, boxHeight:8, padding:16}},
+        tooltip:{...TIP, callbacks:{title:tituloMes, label:c => " " + c.dataset.label + ": " + peso(c.parsed.y)}}},
+      scales:{x:{...ejeX(), stacked:true}, y:{...ejeY(v => "$ " + nfC.format(v)), stacked:true}}}
+  });
+  $("h-iva").textContent = (canal === TODOS ? "Ambos canales" : canal) + " · " + (prov === TODOS ? "todas las provincias" : prov);
+
+  $("h-tiva").textContent = mesLargo(mes) + " · " + (canal === TODOS ? "ambos canales" : canal);
+  const fila = (nombre, r, cls) => "<tr class='"+cls+"'><td>"+nombre+"</td><td>"+nf0.format(r.pedidos)+"</td><td>"+peso(r.ventas_sin_iva)+"</td><td>"+peso(r.iva)+"</td><td>"+peso(r.envio)+"</td><td>"+peso(r.ventas)+"</td></tr>";
+  $("t-iva").innerHTML = "<tr><th>Provincia</th><th>Pedidos</th><th>Sin IVA</th><th>IVA</th><th>Envío</th><th>Ventas</th></tr>" +
+    IDX.provs.map(p => { const r = V(mes,canal,p); return r ? fila(p, r, prov === p ? "sel" : "") : ""; }).join("") +
+    (V(mes,canal,TODOS) ? fila("Total", V(mes,canal,TODOS), "tot") : "");
+}
+
+/* ---------- control general ---------- */
+function render(){
+  $("subtitulo").textContent = "EcoBottle AR · " + mesLargo(IDX.meses[0]) + " a " + mesLargo(IDX.meses[IDX.meses.length-1]);
+  if(estado.tab === "resumen"){
+    renderKPIs(); renderLinea(); renderDonut(); renderProv(); renderNPS(); renderRank(); renderUsuarios();
+  } else {
+    renderIVA();
+  }
+}
+function mostrarTab(t){
+  estado.tab = t;
+  $("page-resumen").hidden = t !== "resumen";
+  $("page-iva").hidden = t !== "iva";
+  $("tab-resumen").setAttribute("aria-selected", t === "resumen");
+  $("tab-iva").setAttribute("aria-selected", t === "iva");
+  $("titulo").textContent = t === "resumen" ? "Resumen de ventas" : "IVA y envío";
+  history.replaceState(null, "", t === "iva" ? "#iva" : "#resumen");
+  render();
+}
+function llenar(sel, valores, etiqueta){
+  sel.innerHTML = valores.map(v => "<option value='"+v+"'>"+etiqueta(v)+"</option>").join("");
+}
+function efectoVidrio(){
+  document.querySelectorAll(".card").forEach(c => c.addEventListener("pointermove", e => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    c.style.setProperty("--my", (e.clientY - r.top) + "px");
+  }));
+}
+function panelLateral(){
+  const app = $("app"), btn = $("toggle");
+  const poner = cerrado => {
+    app.classList.toggle("colapsado", cerrado);
+    btn.setAttribute("aria-expanded", String(!cerrado));
+    btn.setAttribute("aria-label", cerrado ? "Desplegar el panel lateral" : "Contraer el panel lateral");
+    try{ localStorage.setItem("eco-panel", cerrado ? "1" : "0"); }catch(e){}
+    setTimeout(() => Object.values(charts).forEach(c => c.resize()), 380);
+  };
+  let guardado = false;
+  try{ guardado = localStorage.getItem("eco-panel") === "1"; }catch(e){}
+  if(guardado) poner(true);
+  btn.addEventListener("click", () => poner(!app.classList.contains("colapsado")));
+}
+async function iniciar(){
+  efectoVidrio(); panelLateral();
+  try{ D = await cargar(); }
+  catch(e){
+    const box = $("error"); box.hidden = false;
+    box.innerHTML = "<b>No se pudieron cargar los datos.</b><br>" + e.message +
+      "<br><br>Si abriste el archivo con doble clic, hace falta un servidor: desde la carpeta del repo corré <code>python -m http.server</code> y abrí <code>http://localhost:8000/dashboards/</code>.";
+    document.querySelectorAll(".page").forEach(p => p.hidden = true);
+    return;
+  }
+  indexar();
+  llenar($("f-mes"), [TODOS, ...IDX.meses], m => m === TODOS ? "Todos los meses" : mesLargo(m));
+  llenar($("f-canal"), [TODOS, ...IDX.canales], c => c === TODOS ? "Todos los canales" : c);
+  llenar($("f-prov"), [TODOS, ...IDX.provs], p => p === TODOS ? "Todas las provincias" : p);
+  [["f-mes","mes"],["f-canal","canal"],["f-prov","prov"]].forEach(([id,k]) =>
+    $(id).addEventListener("change", e => { estado[k] = e.target.value; render(); }));
+  $("reset").addEventListener("click", () => {
+    estado.mes = estado.canal = estado.prov = TODOS;
+    ["f-mes","f-canal","f-prov"].forEach(id => $(id).value = TODOS); render();
+  });
+  $("tab-resumen").addEventListener("click", () => mostrarTab("resumen"));
+  $("tab-iva").addEventListener("click", () => mostrarTab("iva"));
+  mostrarTab(location.hash === "#iva" ? "iva" : "resumen");
+}
+iniciar();
+</script>
+</body>
+</html>
