@@ -1,8 +1,8 @@
 -- =====================================================================
--- 05_data_marts_dashboard.sql — Data marts para el dashboard
+-- 05_data_marts_dashboards.sql — Data marts para el dashboard
 -- Cada combinación de filtros trae su fila, con 'Todos' como total.
 -- Los indicadores (ticket, NPS, usuarios, ranking) ya vienen calculados:
--- Power BI solo muestra la fila elegida, sin medidas propias.
+-- El dashboard solo muestra la fila elegida, sin cálculos propios.
 -- =====================================================================
 
 -- Valores de los filtros (con la opción 'Todos')

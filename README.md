@@ -9,7 +9,7 @@ Diseñar e implementar un mini ecosistema de datos comercial (online + offline) 
 
 1. Modela un **esquema estrella** (Kimball) en SQL con DuckDB a partir de los 13 CSV de origen.
 2. Calcula cada KPI con un **script Python** que lee el data warehouse.
-3. Alimenta un **dashboard** para el área comercial con: Ventas, Usuarios Activos, Ticket Promedio, NPS, Ventas por Provincia y Ranking mensual por Producto. Se construyó en **Looker Studio** y, como respaldo, en **Power BI**.
+3. Alimenta un **dashboard** para el área comercial con: Ventas, Usuarios Activos, Ticket Promedio, NPS, Ventas por Provincia y Ranking mensual por Producto. El dashboard solo muestra los indicadores ya calculados en los data marts.
 
 **Resultado en una línea:** entre el 01/01/2024 y el 30/09/2025 la empresa vendió **$382.410.636** en **10.998** pedidos, con un ticket promedio de **$34.771** y un NPS de **30,0**.
 
@@ -30,8 +30,7 @@ scripts/
   kpi_ventas_provincia.py       KPI Ventas por provincia
   kpi_ranking_producto.py       KPI Ranking mensual por producto
 dw/                   data warehouse: CSV de dimensiones, hechos y data marts de KPIs (se regenera)
-docs/                 capturas (PNG) de los dashboards de Looker Studio y Power BI
-powerbi/              reporte de Power BI (.pbix) y medidas DAX
+docs/                 capturas (PNG) del dashboard
 run_sql.py            ejecuta sql/ y arma el data warehouse
 requirements.txt      dependencias (DuckDB)
 ```
@@ -441,18 +440,32 @@ Una combinación origen + dispositivo.
 | `comment` | VARCHAR |  | Sí | Comentario libre (opcional). |
 | `responded_at` | TIMESTAMP |  | No | Fecha y hora de la respuesta. |
 
-### 5.2 Data marts (tablas de KPIs generadas por `scripts/`)
+### 5.2 Data marts (esquema `mart`)
 
-Cada KPI tiene su **data mart** en `dw/`, ya agregado al grano que consume el dashboard. Se generan con un script Python que lee el warehouse; el dashboard de Looker Studio los usa como fuente.
+Un **data mart** es una tabla chica, calculada con SQL **a partir del modelo estrella** (nunca desde `raw/`), que responde a las preguntas del dashboard. Viven en el esquema `mart` de DuckDB (`SELECT * FROM mart.resumen_ventas`) y se exportan como CSV a `dw/marts/`. Todos los indicadores (ticket, NPS, usuarios activos distintos, ranking) ya vienen calculados: el dashboard solo muestra la fila que corresponde a los filtros elegidos.
 
-| Archivo en `dw/` | Script | Columnas |
-|---|---|---|
-| `kpi_ventas_diario.csv` | `kpi_ventas.py` | `fecha`, `mes`, `canal`, `provincia`, `pedidos`, `ventas` |
-| `kpi_ticket_mensual.csv` | `kpi_ticket_promedio.py` | `mes`, `canal`, `provincia`, `pedidos`, `ventas`, `ticket_promedio` |
-| `kpi_usuarios_activos_diario.csv` y `_mensual.csv` | `kpi_usuarios_activos.py` | `periodo`, `origen`, `usuarios_activos`, `sesiones` |
-| `kpi_nps_diario.csv` y `_mensual.csv` | `kpi_nps.py` | `periodo`, `canal`, `respuestas`, `promotores`, `pasivos`, `detractores`, `nps` |
-| `kpi_ventas_provincia.csv` | `kpi_ventas_provincia.py` | `mes`, `canal`, `provincia`, `cod_provincia`, `pedidos`, `ventas` |
-| `kpi_ranking_producto_mensual.csv` | `kpi_ranking_producto.py` | `mes`, `canal`, `provincia`, `producto`, `categoria`, `unidades`, `ventas_items`, `ranking_mes` |
+**`sql/04_data_marts.sql`: detalle por día, mes y provincia**
+
+| Tabla (`mart.`) | Columnas |
+|---|---|
+| `ventas_diario` | `fecha`, `mes`, `canal`, `provincia`, `pedidos`, `ventas` |
+| `ticket_mensual` | `mes`, `canal`, `provincia`, `pedidos`, `ventas`, `ticket_promedio` |
+| `usuarios_activos_diario` y `usuarios_activos_mensual` | `periodo`, `origen`, `usuarios_activos`, `sesiones` |
+| `nps_diario` y `nps_mensual` | `periodo`, `canal`, `respuestas`, `promotores`, `pasivos`, `detractores`, `nps` |
+| `ventas_provincia` | `mes`, `canal`, `provincia`, `cod_provincia`, `pedidos`, `ventas` |
+| `ranking_producto_mensual` | `mes`, `canal`, `provincia`, `producto`, `categoria`, `unidades`, `ventas_items`, `ranking_mes` |
+
+**`sql/05_data_marts_dashboards.sql`: resúmenes para el dashboard**
+
+Traen una fila para cada combinación de filtros, con `Todos` como total (por ejemplo, `mes = 'Todos'` y `canal = 'Todos'` es el total del período). Así el indicador, incluso los que no se pueden sumar, sale de una sola fila ya calculada.
+
+| Tabla (`mart.`) | Columnas |
+|---|---|
+| `resumen_ventas` | `mes`, `canal`, `provincia`, `pedidos`, `ventas`, `ventas_sin_iva`, `iva`, `envio`, `ticket_promedio` |
+| `resumen_nps` | `mes`, `canal`, `respuestas`, `promotores`, `pasivos`, `detractores`, `nps` |
+| `resumen_usuarios` | `mes`, `origen`, `usuarios_activos`, `sesiones` |
+| `resumen_ranking_producto` | `mes`, `canal`, `provincia`, `producto`, `categoria`, `unidades`, `ventas_items`, `ranking` |
+| `filtro_mes`, `filtro_canal`, `filtro_provincia` | valores de cada filtro, con la opción `Todos` |
 
 ### 5.3 Dominios de los estados
 
@@ -472,15 +485,15 @@ Cada KPI tiene su **data mart** en `dw/`, ya agregado al grano que consume el da
 3. **Ticket Promedio** = `SUM(total_amount) / cantidad de pedidos`, con el mismo filtro de Ventas.
 4. **Provincia** = provincia de la dirección de envío. En compras en tienda es la provincia de la tienda.
 5. **Usuarios activos:** un usuario es el cliente si inició sesión; si la sesión es anónima, cada sesión cuenta como un usuario (el 70,5 % de las sesiones es anónimo). Una persona anónima que vuelve se cuenta de nuevo, porque no hay forma de reconocerla. Por eso es una **estimación**.
-6. **Los usuarios distintos no se suman** entre períodos ni entre orígenes. Por eso el dashboard no los calcula sumando filas: usa `kpi_usuarios_activos_mensual.csv`, donde cada mes ya trae el total de usuarios distintos en la fila `origen = 'Todos'`. Con `COUNT_DISTINCT` sobre `fact_web_session.csv`, Looker Studio contaba los usuarios por día y luego sumaba (99.515 en lugar de los 73.828 usuarios distintos reales). Por eso la tarjeta muestra el **promedio de usuarios activos por mes**. En Power BI, la tarjeta usa `DISTINCTCOUNT(active_user_key)` sobre `fact_web_session`, que sí calcula los usuarios distintos del período filtrado (73,8 K en el período completo); la serie mensual muestra los distintos de cada mes.
+6. **Los usuarios distintos no se suman** entre períodos ni entre orígenes. Por eso el dashboard no los calcula sumando filas: usa `kpi_usuarios_activos_mensual.csv`, donde cada mes ya trae el total de usuarios distintos en la fila `origen = 'Todos'`. Con un `COUNT_DISTINCT` directo sobre `fact_web_session.csv`, una herramienta de visualización cuenta los usuarios por día y luego suma (99.515 en lugar de los 73.828 usuarios distintos reales). Por eso la tarjeta muestra el **promedio de usuarios activos por mes**.
 7. **NPS** = (% de respuestas 9-10) − (% de respuestas 0-6), por 100. Las respuestas sin cliente se incluyen (anónimas). El dashboard recalcula el NPS con los conteos de cada filtro; los CSV de NPS traen además filas `canal = 'Todos'` que el tablero excluye para no duplicar respuestas.
 8. **Las sesiones web no tienen número de pedido** y el NPS tampoco: no se puede atribuir una venta a un origen de tráfico ni un NPS a un pedido. El NPS se relaciona por cliente y canal.
 9. **Las sesiones web pertenecen al canal online;** no tienen provincia. Por eso Usuarios Activos no responde a los filtros de canal y provincia.
 10. Los datos son una **foto del 30/09/2025 23:59:59**; 2025 tiene 9 meses, por lo que las comparaciones interanuales usan enero-septiembre.
 11. Los datos de `raw/` son sintéticos y no se modificaron. Las cuentas cierran: `subtotal` = suma de `line_total` y `total_amount` = subtotal + IVA + envío (se verifica en `sql/03_consultas.sql`).
 12. **Impuestos.** Las **Ventas** del dashboard son el total del pedido (`total_amount`), como indica la consigna: subtotal sin IVA + IVA 21 % + envío. En el período completo son $382.410.636 y se descomponen en $309.891.600 sin IVA, $65.077.236 de IVA y $7.441.800 de envío (consulta D1 de `sql/03_consultas.sql`; la diferencia de control es 0). El envío casi no existe en las tiendas físicas ($266.100 contra $7.175.700 en la tienda online). Sin IVA ni envío, el ticket promedio es de $28.133 en la tienda online y $28.240 en las tiendas físicas (D4). El modelo guarda los tres componentes por separado (`subtotal`, `tax_amount`, `shipping_fee`), por lo que se pueden obtener ventas sin impuestos con SQL; los dashboards muestran el total con IVA y envío. El **ranking por producto** usa `line_total`, que ya es sin IVA ni envío.
-13. **Data marts.** Se generan como archivos CSV en `dw/` con scripts de Python que leen el warehouse con SQL. Se eligió CSV porque es el formato que cargan directamente Looker Studio y Power BI, y porque se regeneran con un solo comando.
-14. **Dos dashboards.** Looker Studio es la entrega principal. Power BI se agregó con el mismo modelo, filtros y vistas como respaldo, por si hubiera problemas para visualizar el primero. Los valores coinciden con las consultas SQL (ver sección 8.2). Las medidas DAX solo reproducen para visualizar lo que ya se calcula en SQL y Python.
+13. **Data marts.** Se construyen con SQL (`sql/04_data_marts.sql` y `sql/05_data_marts_dashboards.sql`) a partir del modelo estrella, nunca desde `raw/`, y viven en el esquema `mart` de DuckDB (`SELECT * FROM mart.resumen_ventas`). Se exportan como CSV en `dw/marts/`, porque es un formato que cargan directamente las herramientas de visualización, y se regeneran con un solo comando (`python run_sql.py`).
+14. **Dashboard.** Todos los indicadores se calculan en SQL (data marts) y el dashboard solo los muestra, sin cálculos propios. Los valores coinciden con las consultas de `sql/03_consultas.sql`.
 15. **Datos sintéticos y estimaciones.** Los usuarios activos son una estimación (el 70,5 % de las sesiones es anónimo). La relación entre la demora de entregas y la caída del NPS es una asociación en el tiempo, no una causa probada.
 
 ## 7. KPIs y consultas clave
@@ -592,33 +605,20 @@ ORDER BY mes, ranking;
 
 Los usuarios activos vienen del CSV mensual precalculado porque los usuarios distintos no se pueden sumar: con `COUNT_DISTINCT` sobre las sesiones, Looker Studio sumaba los distintos de cada día (ver supuesto 6). La tarjeta es el **promedio de usuarios activos por mes** en el período elegido. El filtro de producto solo afecta al ranking, y las sesiones web no tienen canal ni provincia (ver supuestos 8 y 9).
 
-### 8.2 Power BI (respaldo)
+### 8.2 Validación contra SQL y los data marts
 
-- **Archivo:** [`powerbi/EcoBottle_AR.pbix`](powerbi/EcoBottle_AR.pbix). Para abrirlo en otra máquina: *Transformar datos → Configuración de origen de datos* y apuntar a la carpeta `dw/`. La configuración regional de importación debe ser *Inglés (EE. UU.)*.
-- **Modelo:** las 9 dimensiones y las 6 tablas de hechos de `dw/`, con 30 relaciones (27 activas y 3 inactivas para las fechas de cobro, despacho y entrega).
-- **Medidas DAX:** [`powerbi/medidas.dax`](powerbi/medidas.dax). Los cálculos de origen están en SQL y Python; el DAX solo los reproduce para visualizar.
+Los valores del dashboard coinciden con las consultas de `sql/03_consultas.sql` y con los data marts:
 
-![Dashboard completo en Power BI](docs/dashboard_powerbi.png)
-
-| Vista | Captura |
-|---|---|
-| Canal = Tienda Online | [`docs/dashboard_powerbi_tienda_online.png`](docs/dashboard_powerbi_tienda_online.png) |
-| Canal = Tiendas Físicas | [`docs/dashboard_powerbi_tiendas_fisicas.png`](docs/dashboard_powerbi_tiendas_fisicas.png) |
-
-**Validación contra SQL y los data marts:**
-
-| Vista | Consulta / data mart | Valor en Power BI |
+| Vista | Consulta / data mart | Valor en el dashboard |
 |---|---|---|
 | Ventas ($M) | B1 / `kpi_ventas_diario.csv` | $382,4 M |
 | Ticket promedio ($K) | B3 / `kpi_ticket_mensual.csv` | $34,8 K |
-| Usuarios activos (nK) | B4 / `kpi_usuarios_activos_*.csv` | 73,8 K |
+| Usuarios activos (nK) | B4 / `kpi_usuarios_activos_*.csv` | 73,8 K (usuarios distintos del período completo) |
 | NPS | B5 / `kpi_nps_*.csv` | 30,0 |
 | Ventas por provincia | B7 / `kpi_ventas_provincia.csv` | BA $142,7 M · Córdoba $89,5 M · Santa Fe $87,5 M · Mendoza $62,6 M |
 | Ranking por producto | B8 / `kpi_ranking_producto_mensual.csv` | Sept. 2025: 1.º Sport B ($6.899.250), 2.º Classic A ($6.534.000) |
 
-Con el filtro `canal = Tienda Online` las ventas son $227,0 M y el NPS 24,0; con `Tiendas Físicas`, $155,4 M y 40,9. Igual que en Looker, Usuarios Activos no cambia con el canal, porque las sesiones web no tienen canal (supuestos 8 y 9).
-
-La tarjeta de Usuarios Activos de Power BI muestra los usuarios distintos del período completo (73,8 K); la de Looker Studio muestra el promedio mensual (≈4,1 mil). Ambos salen de los mismos datos.
+Con el filtro `canal = Tienda Online` las ventas son $227,0 M y el NPS 24,0; con `Tiendas Físicas`, $155,4 M y 40,9. Usuarios Activos no cambia con el canal, porque las sesiones web no tienen canal (supuestos 8 y 9).
 
 ## 9. Hallazgos
 
@@ -637,7 +637,6 @@ La tarjeta de Usuarios Activos de Power BI muestra los usuarios distintos del pe
 ### Ideas para ampliar el dashboard
 
 - Vista de **logística**: tiempo de entrega por mes y provincia junto al NPS online, para detectar demoras antes de que afecten la satisfacción.
-- **Ventas con y sin impuestos** en el dashboard (ya están calculadas en SQL, consultas D1 a D4): IVA y envío por mes y por canal.
 - **Tasa de cancelación** y pagos fallidos por método de pago.
 - **Conversión** mensual (sesiones contra pedidos) y mix de tráfico por origen y dispositivo.
 - **Clientes recurrentes** y frecuencia de compra.

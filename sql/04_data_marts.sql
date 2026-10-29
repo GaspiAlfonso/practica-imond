@@ -1,6 +1,6 @@
 -- =====================================================================
 -- 04_data_marts.sql — Data marts como tablas del warehouse (DuckDB)
--- Todos los indicadores se calculan acá con SQL. Looker Studio y Power BI
+-- Todos los indicadores se calculan acá con SQL. Los dashboards
 -- solo muestran estas tablas, sin fórmulas propias.
 -- =====================================================================
 
