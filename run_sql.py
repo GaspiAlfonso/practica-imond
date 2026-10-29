@@ -61,7 +61,8 @@ def reset_outputs() -> None:
         for path in (DATABASE, DATABASE.with_name(DATABASE.name + ".wal")):
             path.unlink(missing_ok=True)
         DW_DIR.mkdir(exist_ok=True)
-        for path in list(DW_DIR.glob("*.csv")) + [DIAGRAM]:
+        (DW_DIR / "marts").mkdir(exist_ok=True)
+        for path in list(DW_DIR.glob("*.csv")) + list((DW_DIR / "marts").glob("*.csv")) + [DIAGRAM]:
             path.unlink(missing_ok=True)
     except PermissionError:
         sys.exit(ALREADY_OPEN)
@@ -96,21 +97,22 @@ def first_line(query: str) -> str:
     return (lines[0].strip() if lines else query)[:80]
 
 
-def user_tables(con: duckdb.DuckDBPyConnection) -> list[str]:
-    """Tablas creadas por los archivos de sql/ (esquema main de la base)."""
+def user_tables(con: duckdb.DuckDBPyConnection, schema: str = "main") -> list[str]:
+    """Tablas creadas por los archivos de sql/ en el esquema indicado (main o mart)."""
     rows = con.sql(
         "SELECT table_name FROM duckdb_tables() "
-        "WHERE database_name = current_database() AND schema_name = 'main' AND NOT internal "
+        f"WHERE database_name = current_database() AND schema_name = '{schema}' AND NOT internal "
         "ORDER BY table_name"
     ).fetchall()
     return [row[0] for row in rows]
 
 
-def export_tables(con: duckdb.DuckDBPyConnection, tables: list[str]) -> None:
-    print("\nTablas exportadas a dw/:")
+def export_tables(con: duckdb.DuckDBPyConnection, tables: list[str],
+                  schema: str = "main", folder: Path = DW_DIR) -> None:
+    print(f"\nTablas exportadas a {folder.relative_to(ROOT).as_posix()}/:")
     for table in tables:
-        rows = con.sql(f'SELECT COUNT(*) FROM main."{table}"').fetchone()[0]
-        con.sql(f"COPY main.\"{table}\" TO '{(DW_DIR / f'{table}.csv').as_posix()}' (HEADER)")
+        rows = con.sql(f'SELECT COUNT(*) FROM {schema}."{table}"').fetchone()[0]
+        con.sql(f"COPY {schema}.\"{table}\" TO '{(folder / f'{table}.csv').as_posix()}' (HEADER)")
         print(f"  {table + '.csv':<32}{rows:>10} filas")
 
 
@@ -165,9 +167,12 @@ def build() -> duckdb.DuckDBPyConnection:
             con.close()
             sys.exit(1)
     tables = user_tables(con)
+    marts = user_tables(con, "mart")
     if tables:
         export_tables(con, tables)
-        write_diagram(con, [t for t in tables if not t.startswith(("dm_", "dim_filtro_"))])
+        if marts:
+            export_tables(con, marts, "mart", DW_DIR / "marts")
+        write_diagram(con, tables)
     else:
         print("\nTodavía no se creó ninguna tabla.")
     print(f"\nListo. Base de datos: {DATABASE.name}")

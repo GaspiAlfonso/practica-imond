@@ -4,28 +4,29 @@
 -- Los indicadores (ticket, NPS, usuarios, ranking) ya vienen calculados:
 -- El dashboard solo muestra la fila elegida, sin cálculos propios.
 -- =====================================================================
+CREATE SCHEMA IF NOT EXISTS mart;
 
 -- Valores de los filtros (con la opción 'Todos')
-CREATE TABLE dim_filtro_mes AS
+CREATE TABLE mart.filtro_mes AS
 SELECT 'Todos' AS mes
 UNION ALL
 SELECT DISTINCT year_month FROM dim_date
 ORDER BY mes;
 
-CREATE TABLE dim_filtro_canal AS
+CREATE TABLE mart.filtro_canal AS
 SELECT 'Todos' AS canal
 UNION ALL
 SELECT name FROM dim_channel
 ORDER BY canal;
 
-CREATE TABLE dim_filtro_provincia AS
+CREATE TABLE mart.filtro_provincia AS
 SELECT 'Todos' AS provincia
 UNION ALL
 SELECT name FROM dim_province
 ORDER BY provincia;
 
--- dm_resumen_ventas: ventas, pedidos, ticket, IVA y envío por mes x canal x provincia
-CREATE TABLE dm_resumen_ventas AS
+-- mart.resumen_ventas: ventas, pedidos, ticket, IVA y envío por mes x canal x provincia
+CREATE TABLE mart.resumen_ventas AS
 SELECT
     COALESCE(d.year_month, 'Todos')                AS mes,
     COALESCE(ch.name, 'Todos')                     AS canal,
@@ -44,8 +45,8 @@ WHERE o.is_sale
 GROUP BY CUBE (d.year_month, ch.name, p.name)
 ORDER BY mes, canal, provincia;
 
--- dm_resumen_nps: NPS ya calculado por mes x canal
-CREATE TABLE dm_resumen_nps AS
+-- mart.resumen_nps: NPS ya calculado por mes x canal
+CREATE TABLE mart.resumen_nps AS
 SELECT mes, canal, respuestas, promotores, pasivos, detractores,
        (promotores - detractores) * 100.0 / respuestas AS nps
 FROM (
@@ -62,8 +63,8 @@ FROM (
 )
 ORDER BY mes, canal;
 
--- dm_resumen_usuarios: usuarios distintos por mes x origen de tráfico
-CREATE TABLE dm_resumen_usuarios AS
+-- mart.resumen_usuarios: usuarios distintos por mes x origen de tráfico
+CREATE TABLE mart.resumen_usuarios AS
 SELECT COALESCE(d.year_month, 'Todos')   AS mes,
        COALESCE(t.source_name, 'Todos')  AS origen,
        COUNT(DISTINCT w.active_user_key) AS usuarios_activos,
@@ -74,9 +75,9 @@ JOIN dim_traffic AS t ON t.traffic_key = w.traffic_key
 GROUP BY CUBE (d.year_month, t.source_name)
 ORDER BY mes, origen;
 
--- dm_resumen_ranking_producto: ventas por producto con su posición (ranking)
+-- mart.resumen_ranking_producto: ventas por producto con su posición (ranking)
 -- en cada combinación de mes x canal x provincia. line_total no incluye IVA ni envío.
-CREATE TABLE dm_resumen_ranking_producto AS
+CREATE TABLE mart.resumen_ranking_producto AS
 WITH base AS (
     SELECT COALESCE(d.year_month, 'Todos') AS mes,
            COALESCE(ch.name, 'Todos')      AS canal,
@@ -101,33 +102,33 @@ ORDER BY mes, canal, provincia, ranking;
 -- Verificaciones
 -- V1. Esperado: 382410636 | 10998 | 34770.93 | 309891600 | 65077236 | 7441800
 SELECT ventas, pedidos, ROUND(ticket_promedio, 2) AS ticket, ventas_sin_iva, iva, envio
-FROM dm_resumen_ventas
+FROM mart.resumen_ventas
 WHERE mes = 'Todos' AND canal = 'Todos' AND provincia = 'Todos';
 
 -- V2. Esperado: 3083 | 30.0
 SELECT respuestas, ROUND(nps, 1) AS nps
-FROM dm_resumen_nps WHERE mes = 'Todos' AND canal = 'Todos';
+FROM mart.resumen_nps WHERE mes = 'Todos' AND canal = 'Todos';
 
 -- V3. Esperado: 73828 | 100363
 SELECT usuarios_activos, sesiones
-FROM dm_resumen_usuarios WHERE mes = 'Todos' AND origen = 'Todos';
+FROM mart.resumen_usuarios WHERE mes = 'Todos' AND origen = 'Todos';
 
 -- V4. Esperado: Sport B 11047 u. y ranking 1; Classic A 12498 u. y ranking 2
 SELECT producto, unidades, ventas_items, ranking
-FROM dm_resumen_ranking_producto
+FROM mart.resumen_ranking_producto
 WHERE mes = 'Todos' AND canal = 'Todos' AND provincia = 'Todos'
 ORDER BY ranking;
 
--- V5. Esperado: 0 (el resumen coincide con dm_ticket_mensual en el detalle)
+-- V5. Esperado: 0 (el resumen coincide con mart.ticket_mensual en el detalle)
 SELECT COUNT(*) AS diferencias FROM (
-    (SELECT mes, canal, provincia, pedidos, ventas FROM dm_resumen_ventas
+    (SELECT mes, canal, provincia, pedidos, ventas FROM mart.resumen_ventas
      WHERE mes <> 'Todos' AND canal <> 'Todos' AND provincia <> 'Todos'
      EXCEPT
-     SELECT mes, canal, provincia, pedidos, ventas FROM dm_ticket_mensual)
+     SELECT mes, canal, provincia, pedidos, ventas FROM mart.ticket_mensual)
     UNION ALL
-    (SELECT mes, canal, provincia, pedidos, ventas FROM dm_ticket_mensual
+    (SELECT mes, canal, provincia, pedidos, ventas FROM mart.ticket_mensual
      EXCEPT
-     SELECT mes, canal, provincia, pedidos, ventas FROM dm_resumen_ventas
+     SELECT mes, canal, provincia, pedidos, ventas FROM mart.resumen_ventas
      WHERE mes <> 'Todos' AND canal <> 'Todos' AND provincia <> 'Todos')
 );
 

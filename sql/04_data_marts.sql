@@ -4,8 +4,10 @@
 -- solo muestran estas tablas, sin fórmulas propias.
 -- =====================================================================
 
--- dm_ventas_diario: ventas y pedidos por día, canal y provincia
-CREATE TABLE dm_ventas_diario AS
+CREATE SCHEMA IF NOT EXISTS mart;
+
+-- mart.ventas_diario: ventas y pedidos por día, canal y provincia
+CREATE TABLE mart.ventas_diario AS
 SELECT
     d.full_date                         AS fecha,
     d.year_month                        AS mes,
@@ -21,8 +23,8 @@ WHERE o.is_sale
 GROUP BY ALL
 ORDER BY fecha, canal, provincia;
 
--- dm_ventas_provincia: ventas y pedidos por mes, canal y provincia (para el mapa)
-CREATE TABLE dm_ventas_provincia AS
+-- mart.ventas_provincia: ventas y pedidos por mes, canal y provincia (para el mapa)
+CREATE TABLE mart.ventas_provincia AS
 SELECT
     d.year_month                        AS mes,
     ch.name                             AS canal,
@@ -38,8 +40,8 @@ WHERE o.is_sale
 GROUP BY ALL
 ORDER BY mes, canal, provincia;
 
--- dm_ticket_mensual: ticket promedio ya calculado (ventas / pedidos)
-CREATE TABLE dm_ticket_mensual AS
+-- mart.ticket_mensual: ticket promedio ya calculado (ventas / pedidos)
+CREATE TABLE mart.ticket_mensual AS
 SELECT
     d.year_month                                        AS mes,
     ch.name                                             AS canal,
@@ -55,8 +57,8 @@ WHERE o.is_sale
 GROUP BY ALL
 ORDER BY mes, canal, provincia;
 
--- dm_usuarios_activos_diario: usuarios distintos por día y origen (+ fila 'Todos')
-CREATE TABLE dm_usuarios_activos_diario AS
+-- mart.usuarios_activos_diario: usuarios distintos por día y origen (+ fila 'Todos')
+CREATE TABLE mart.usuarios_activos_diario AS
 SELECT d.full_date AS periodo,
        t.source_name AS origen,
        COUNT(DISTINCT w.active_user_key) AS usuarios_activos,
@@ -73,8 +75,8 @@ JOIN dim_date AS d ON d.date_key = w.date_key
 GROUP BY ALL
 ORDER BY periodo, origen;
 
--- dm_usuarios_activos_mensual: usuarios distintos por mes y origen (+ fila 'Todos')
-CREATE TABLE dm_usuarios_activos_mensual AS
+-- mart.usuarios_activos_mensual: usuarios distintos por mes y origen (+ fila 'Todos')
+CREATE TABLE mart.usuarios_activos_mensual AS
 SELECT d.year_month AS periodo,
        t.source_name AS origen,
        COUNT(DISTINCT w.active_user_key) AS usuarios_activos,
@@ -91,8 +93,8 @@ JOIN dim_date AS d ON d.date_key = w.date_key
 GROUP BY ALL
 ORDER BY periodo, origen;
 
--- dm_nps_diario: NPS ya calculado por día y canal (+ fila 'Todos')
-CREATE TABLE dm_nps_diario AS
+-- mart.nps_diario: NPS ya calculado por día y canal (+ fila 'Todos')
+CREATE TABLE mart.nps_diario AS
 SELECT periodo, canal, respuestas, promotores, pasivos, detractores,
        (promotores - detractores) * 100.0 / respuestas AS nps
 FROM (
@@ -117,8 +119,8 @@ FROM (
 )
 ORDER BY periodo, canal;
 
--- dm_nps_mensual: NPS ya calculado por mes y canal (+ fila 'Todos')
-CREATE TABLE dm_nps_mensual AS
+-- mart.nps_mensual: NPS ya calculado por mes y canal (+ fila 'Todos')
+CREATE TABLE mart.nps_mensual AS
 SELECT periodo, canal, respuestas, promotores, pasivos, detractores,
        (promotores - detractores) * 100.0 / respuestas AS nps
 FROM (
@@ -143,9 +145,9 @@ FROM (
 )
 ORDER BY periodo, canal;
 
--- dm_ranking_producto_mensual: ventas por producto y mes, con su posición (ranking_mes)
--- line_total no incluye IVA ni envío (por eso no coincide con dm_ventas_*)
-CREATE TABLE dm_ranking_producto_mensual AS
+-- mart.ranking_producto_mensual: ventas por producto y mes, con su posición (ranking_mes)
+-- line_total no incluye IVA ni envío (por eso no coincide con mart.ventas_*)
+CREATE TABLE mart.ranking_producto_mensual AS
 WITH base AS (
     SELECT d.year_month AS mes, ch.name AS canal, pr.name AS provincia,
            p.name AS producto, p.category AS categoria,
@@ -172,8 +174,8 @@ ORDER BY b.mes, r.ranking_mes, b.canal, b.provincia;
 -- Verificaciones. Esperado: 382410636 | 10998 | 34770.93
 SELECT SUM(ventas) AS ventas, SUM(pedidos) AS pedidos,
        ROUND(SUM(ventas) / SUM(pedidos), 2) AS ticket_promedio
-FROM dm_ticket_mensual;
+FROM mart.ticket_mensual;
 
 -- Esperado: NPS global 30.0
 SELECT ROUND((SUM(promotores) - SUM(detractores)) * 100.0 / SUM(respuestas), 1) AS nps
-FROM dm_nps_mensual WHERE canal <> 'Todos';
+FROM mart.nps_mensual WHERE canal <> 'Todos';
